@@ -17,6 +17,8 @@ export default class MapInterface extends React.Component {
     this.map = null;
     this.API_KEY = "AIzaSyA68pRZe0Qtae8ce4kYB05pwKnaFDYW6h0";
     this.markers = [];
+    this.inputNode = {};
+    this.mapNode = {};
   }
 
   componentWillMount() {
@@ -33,25 +35,26 @@ export default class MapInterface extends React.Component {
     }));
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
     this.geocoder = new window.google.maps.Geocoder();
-    this.map = new window.google.maps.Map(document.getElementsByClassName('map')[0], {
-      center: {lat: this.props.map.location.lat, lng: this.props.map.location.lng},
+    this.map = new window.google.maps.Map(this.mapNode, {
+      center: {lat: nextProps.map.location.lat, lng: nextProps.map.location.lng},
       zoom: 13,
       mapTypeId: 'roadmap',
     });
-    this.map.addListener('zoom_changed', () => {
-      this.props.dispatch(Map.setMap({
-        zoom: this.map.getZoom(),
-      }));
-    });
 
-    this.map.addListener('drag', (e) => {
-      this.props.dispatch(Map.setLocation({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng()
-      }));
-    });
+    // this.map.addListener('zoom_changed', () => {
+    //   this.props.dispatch(Map.setMap({
+    //     zoom: this.map.getZoom(),
+    //   }));
+    // });
+    //
+    // this.map.addListener('drag', (e) => {
+    //   this.props.dispatch(Map.setLocation({
+    //     lat: e.latLng.lat(),
+    //     lng: e.latLng.lng()
+    //   }));
+    // });
 
     this.map.addListener('maptypeid_changed', () => {
       this.props.dispatch(Map.setMap({
@@ -59,16 +62,10 @@ export default class MapInterface extends React.Component {
       }));
     });
 
-    let marker = new window.google.maps.Marker({
-      map: this.map,
-      position: {lat: this.props.map.location.lat, lng: this.props.map.location.lng},
-    });
-
     // initialize the autocomplete functionality using the #pac-input input box
-    let inputNode = document.getElementsByClassName('pac_input')[0];
-    var searchBox = new google.maps.places.SearchBox(inputNode);
-    this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(inputNode);
-    let autoComplete = new window.google.maps.places.Autocomplete(inputNode);
+    var searchBox = new google.maps.places.SearchBox(this.inputNode);
+    this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
+    let autoComplete = new window.google.maps.places.Autocomplete(this.inputNode);
 
     // Bias the SearchBox results towards current map's viewport.
     this.map.addListener('bounds_changed', ()=>{
@@ -80,7 +77,6 @@ export default class MapInterface extends React.Component {
       if (places.length == 0 ){
         return;
       }
-
       // Clear out the old markers.
       this.markers.forEach(function(marker) {
         marker.setMap(null);
@@ -102,11 +98,12 @@ export default class MapInterface extends React.Component {
           bounds.extend(place.geometry.location);
         }
 
-        let location = place.geometry.location;
         this.props.dispatch(Map.setLocation({
-          place_formatted: inputNode.value,
+          place_formatted: this.inputNode.value,
           place_id: place.place_id,
-          place_location: location.toString(),
+          place_location: place.geometry.location.toString(),
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
         }));
 
       });
@@ -115,8 +112,9 @@ export default class MapInterface extends React.Component {
 
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log(nextProps)
+  componentDidMount(){
+    this.inputNode = document.getElementsByClassName('pac_input')[0];
+    this.mapNode = document.getElementsByClassName('map')[0];
   }
 
   dropMarker(id, title, position) {
@@ -190,8 +188,8 @@ export default class MapInterface extends React.Component {
           <div className='map__container__state'>
               Zoom level: {map.map.zoom}<br />
               Map type: {map.map.maptype}<br />
-              Latitude: {map.location.lat.toFixed(5)}<br />
-              Longtitude: {map.location.lng.toFixed(5)}<br />
+              Latitude: {map.location.lat}<br />
+              Longtitude: {map.location.lng}<br />
               Place: {map.location.place_formatted}<br />
               Place ID: {map.location.place_id}<br />
               Location: {map.location.place_location}<br />
