@@ -1,13 +1,9 @@
 <p align=center>
-<img src="https://github.com/Hello-Neighbor/Hello-Neighbor-Chat/blob/master/cover.jpg">
-</p>
-<p align=center>
+# Hello-Neighbor-Chat
+Localized chatting app
 <a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p> 
-
-# Hello-Neighbor-Chat
-Localized chatting app
 ## Installation and Building
 
 ```bash

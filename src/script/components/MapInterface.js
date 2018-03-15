@@ -2,54 +2,69 @@ import React from "react"
 import { connect } from "react-redux"
 
 import * as Map from "../actions/Map"
+import Chatroom from "./Chatroom"
+
+@connect((store) => {
+  return {
+    activeChatroom: store.activeChatroom,
+    map: store.map,
+    location: store.location
+  };
+})
 
 export default class MapInterface extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      zoom: 13,
-      lat: -33.8688,
-      lng: 151.2195,
-      maptype: 'roadmap',
-      place_formatted: '',
-      place_id: '',
-      place_location: '',
-    };
     this.map = null;
     this.API_KEY = "AIzaSyA68pRZe0Qtae8ce4kYB05pwKnaFDYW6h0";
     this.markers = [];
+
+  }
+
+  componentWillMount() {
+    this.props.dispatch(Map.setMap({
+      zoom: 13,
+      mapTypeId: 'roadmap'
+    }));
+    this.props.dispatch(Map.setLocation({
+      lat: -33.8688,
+      lng: 151.2195,
+      place_formatted: '',
+      place_id: '',
+      place_location: '',
+    }));
   }
 
   componentDidMount() {
     this.geocoder = new window.google.maps.Geocoder();
     this.map = new window.google.maps.Map(document.getElementsByClassName('map')[0], {
-      center: {lat: this.state.lat, lng: this.state.lng},
+      center: {lat: this.props.location.lat, lng: this.props.location.lng},
       zoom: 13,
       mapTypeId: 'roadmap',
     });
     this.map.addListener('zoom_changed', () => {
-      this.setState({
+      this.props.dispatch(Map.setMap({
         zoom: this.map.getZoom(),
-      });
+      }));
     });
 
     this.map.addListener('drag', (e) => {
-      this.setState({
+      this.props.dispatch(Map.setLocation({
         lat: e.latLng.lat(),
         lng: e.latLng.lng()
-      });
+      }));
     });
 
     this.map.addListener('maptypeid_changed', () => {
-      this.setState({
+      this.props.dispatch(Map.setMap({
         maptype: this.map.getMapTypeId(),
-      });
+      }));
     });
 
     let marker = new window.google.maps.Marker({
       map: this.map,
-      position: {lat: this.state.lat, lng: this.state.lng},
+      position: {lat: this.props.location.lat, lng: this.props.location.lng},
     });
 
     // initialize the autocomplete functionality using the #pac-input input box
@@ -81,21 +96,7 @@ export default class MapInterface extends React.Component {
           console.log("Returned place contains no geometry");
           return;
         }
-        var icon = {
-          url: place.icon,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
-
-        // Create a marker for each place.
-        this.markers.push(new google.maps.Marker({
-          map: this.map,
-          icon: icon,
-          title: place.name,
-          position: place.geometry.location
-        }));
+        this.dropMarker(place.place_id, place.name, place.geometry.location);
 
         if (place.geometry.viewport) {
           // Only geocodes have viewport.
@@ -105,15 +106,44 @@ export default class MapInterface extends React.Component {
         }
 
         let location = place.geometry.location;
-        this.setState({
+        this.props.dispatch(Map.setLocation({
           place_formatted: inputNode.value,
           place_id: place.place_id,
           place_location: location.toString(),
-        });
+        }));
 
       });
       this.map.fitBounds(bounds);
     });
+
+  }
+
+  dropMarker(id, title, position) {
+    var neighborhoodsLength = 1;
+    for (var i = 0; i < neighborhoodsLength ; i++) {
+      setTimeout(()=>{
+        this.addMarker(id, title, position);
+      }, i * 200);
+    }
+  }
+
+  addMarker(id, title, position){
+    //var image = 'img/flagred.png';
+    var marker = new window.google.maps.Marker({
+      map: this.map,
+      title,
+      position,
+      //icon: image,
+      draggable: false,
+      animation: google.maps.Animation.DROP
+    });
+    this.markers.push(marker);
+
+    window.google.maps.event.addListener(marker, 'click', ()=>{
+      console.log("clicked")
+      this.props.dispatch(Map.showChatroom(id, title));
+    });
+ 
   }
 
   getPostion(){
@@ -126,14 +156,7 @@ export default class MapInterface extends React.Component {
           }, (results, status) => {
             if (status === google.maps.GeocoderStatus.OK) {
               if (results[1]) {
-                this.markers.push(new google.maps.Marker({
-                  map: this.map,
-                  place: {
-                    placeId: results[1].place_id,
-                    location: newLatLngCoord
-                  },
-                  title: results[1].formatted_address
-                }));
+                this.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
               } else {
                 alert('No results found');
                 return;
@@ -147,11 +170,10 @@ export default class MapInterface extends React.Component {
           var bounds = new google.maps.LatLngBounds();
           bounds.extend(newLatLngCoord);
           this.map.fitBounds(bounds);
-
-          this.setState({
+          this.props.dispatch(Map.setLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          });
+          }));
         });
     } else {
         alert("Geolocation is not supported by this browser.");
@@ -160,21 +182,26 @@ export default class MapInterface extends React.Component {
 
 
   render() {
+    const {activeChatroom, location, map} = this.props.map;
+    console.log(this.props)
+    console.log(map)
     return (
-      <div className="map__container">
-        <div className='map__container__state'>
-            Zoom level: {this.state.zoom}<br />
-            Map type: {this.state.maptype}<br />
-            Latitude: {this.state.lat.toFixed(5)}<br />
-            Longtitude: {this.state.lng.toFixed(5)}<br />
-            Place: {this.state.place_formatted}<br />
-            Place ID: {this.state.place_id}<br />
-            Location: {this.state.place_location}<br />
-            <button className="map__container__state__positioningBtn" onClick={this.getPostion.bind(this)}>Positioning</button>
+      <React.Fragment>
+        <div className="map__container">
+          <div className='map__container__state'>
+              Zoom level: {map.zoom}<br />
+              Map type: {map.maptype}<br />
+              Latitude: {location.lat.toFixed(5)}<br />
+              Longtitude: {location.lng.toFixed(5)}<br />
+              Place: {location.place_formatted}<br />
+              Place ID: {location.place_id}<br />
+              Location: {location.place_location}<br />
+              <button className="map__container__state__positioningBtn" onClick={this.getPostion.bind(this)}>Positioning</button>
+          </div>
+          <input className='pac_input' type='text' placeholder='Enter a location' />
+          <div className='map' />
         </div>
-        <input className='pac_input' type='text' placeholder='Enter a location' />
-        <div className='map' />
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -54,7 +54,7 @@ export default class Chatroom extends React.Component {
     const { chatroom, user } = this.props;
     const currentChatroom = chatroom.RoomArr[this.chatRoomId];
     return (<div className="chatroom">
-      <div className = "chatroom__header"><h2>Chatroom #1</h2></div>
+      <div className = "chatroom__header"><h2>{this.props.id}</h2></div>
       <div className = "chatroom__chatContainer">
         <ReactCSSTransitionGroup transitionName="message" transitionEnterTimeout={700} transitionLeaveTimeout={700}>
           {

@@ -16,5 +16,5 @@ import "../style/main.scss"
 const app = document.getElementById('app')
 
 ReactDOM.render(<Provider store={store}>
-  <MapInterface />
+	<MapInterface />
 </Provider>, app);
