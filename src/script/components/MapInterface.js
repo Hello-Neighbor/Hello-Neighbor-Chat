@@ -6,9 +6,7 @@ import Chatroom from "./Chatroom"
 
 @connect((store) => {
   return {
-    activeChatroom: store.activeChatroom,
-    map: store.map,
-    location: store.location
+    map: store.map
   };
 })
 
@@ -19,7 +17,6 @@ export default class MapInterface extends React.Component {
     this.map = null;
     this.API_KEY = "AIzaSyA68pRZe0Qtae8ce4kYB05pwKnaFDYW6h0";
     this.markers = [];
-
   }
 
   componentWillMount() {
@@ -39,7 +36,7 @@ export default class MapInterface extends React.Component {
   componentDidMount() {
     this.geocoder = new window.google.maps.Geocoder();
     this.map = new window.google.maps.Map(document.getElementsByClassName('map')[0], {
-      center: {lat: this.props.location.lat, lng: this.props.location.lng},
+      center: {lat: this.props.map.location.lat, lng: this.props.map.location.lng},
       zoom: 13,
       mapTypeId: 'roadmap',
     });
@@ -64,7 +61,7 @@ export default class MapInterface extends React.Component {
 
     let marker = new window.google.maps.Marker({
       map: this.map,
-      position: {lat: this.props.location.lat, lng: this.props.location.lng},
+      position: {lat: this.props.map.location.lat, lng: this.props.map.location.lng},
     });
 
     // initialize the autocomplete functionality using the #pac-input input box
@@ -118,6 +115,10 @@ export default class MapInterface extends React.Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
+  }
+
   dropMarker(id, title, position) {
     var neighborhoodsLength = 1;
     for (var i = 0; i < neighborhoodsLength ; i++) {
@@ -143,7 +144,7 @@ export default class MapInterface extends React.Component {
       console.log("clicked")
       this.props.dispatch(Map.showChatroom(id, title));
     });
- 
+
   }
 
   getPostion(){
@@ -182,20 +183,18 @@ export default class MapInterface extends React.Component {
 
 
   render() {
-    const {activeChatroom, location, map} = this.props.map;
-    console.log(this.props)
-    console.log(map)
+    const {map} = this.props;
     return (
       <React.Fragment>
         <div className="map__container">
           <div className='map__container__state'>
-              Zoom level: {map.zoom}<br />
-              Map type: {map.maptype}<br />
-              Latitude: {location.lat.toFixed(5)}<br />
-              Longtitude: {location.lng.toFixed(5)}<br />
-              Place: {location.place_formatted}<br />
-              Place ID: {location.place_id}<br />
-              Location: {location.place_location}<br />
+              Zoom level: {map.map.zoom}<br />
+              Map type: {map.map.maptype}<br />
+              Latitude: {map.location.lat.toFixed(5)}<br />
+              Longtitude: {map.location.lng.toFixed(5)}<br />
+              Place: {map.location.place_formatted}<br />
+              Place ID: {map.location.place_id}<br />
+              Location: {map.location.place_location}<br />
               <button className="map__container__state__positioningBtn" onClick={this.getPostion.bind(this)}>Positioning</button>
           </div>
           <input className='pac_input' type='text' placeholder='Enter a location' />

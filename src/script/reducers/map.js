@@ -14,7 +14,7 @@ export default function reducer(state={
         return {
           ...state,
           map:{
-            mapTypeId: action.payload.mapTypeId || state.map.mapTypeId, 
+            mapTypeId: action.payload.mapTypeId || state.map.mapTypeId,
             center: action.payload.center || state.map.center,
             zoom: action.payload.zoom || state.map.zoom,
             maptype: action.payload.maptype || state.map.maptype,
@@ -26,7 +26,7 @@ export default function reducer(state={
         return {
           ...state,
           location:{
-            place_formatted: action.payload.place_formatted || state.location.place_formatted, 
+            place_formatted: action.payload.place_formatted || state.location.place_formatted,
             place_id: action.payload.place_id || state.location.place_id,
             place_location: action.payload.place_location || state.location.place_location,
             lat: action.payload.lat || state.location.lat,
