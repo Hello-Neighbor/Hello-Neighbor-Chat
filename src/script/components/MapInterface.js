@@ -2,11 +2,14 @@ import React from "react"
 import { connect } from "react-redux"
 
 import * as Map from "../actions/Map"
+import * as Chat from "../actions/Chat"
+
 import Chatroom from "./Chatroom"
 
 @connect((store) => {
   return {
-    map: store.map
+    map: store.map,
+    chatroom: store.chatroom
   };
 })
 
@@ -33,6 +36,14 @@ export default class MapInterface extends React.Component {
       place_id: '',
       place_location: '',
     }));
+
+    //for prototyping
+
+    this.props.dispatch(Chat.createChatroom(0, "johnhckuo", "Running", -33.8788, 151.2295));
+    this.props.dispatch(Chat.createChatroom(1, "johnhckuo", "Coding", -33.8388, 151.2495));
+    this.props.dispatch(Chat.createChatroom(2, "johnhckuo", "Mountain Climbing", -33.9, 151.3));
+    this.props.dispatch(Chat.createChatroom(3, "johnhckuo", "Bicycling", -33.88, 151.2095));
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,11 +121,20 @@ export default class MapInterface extends React.Component {
       this.map.fitBounds(bounds);
     });
 
+
+    //add chatroom marker
+    console.log(nextProps.chatroom)
+    nextProps.chatroom.RoomArr.map((val)=>{
+      var newLatLng = new google.maps.LatLng(val.lat, val.lng);
+      this.dropMarker("212", val.title, newLatLng);
+    })
+
   }
 
   componentDidMount(){
     this.inputNode = document.getElementsByClassName('pac_input')[0];
     this.mapNode = document.getElementsByClassName('map')[0];
+
   }
 
   dropMarker(id, title, position) {
@@ -139,7 +159,6 @@ export default class MapInterface extends React.Component {
     this.markers.push(marker);
 
     window.google.maps.event.addListener(marker, 'click', ()=>{
-      console.log("clicked")
       this.props.dispatch(Map.showChatroom(id, title));
     });
 
@@ -184,6 +203,12 @@ export default class MapInterface extends React.Component {
     const {map} = this.props;
     return (
       <React.Fragment>
+        {
+          map.activeChatroom.map((val)=>{
+            console.log(map)
+            return <Chatroom id={val.id} title={val.title} />
+          })
+        }
         <div className="map__container">
           <div className='map__container__state'>
               Zoom level: {map.map.zoom}<br />

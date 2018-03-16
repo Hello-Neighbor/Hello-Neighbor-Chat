@@ -30,11 +30,15 @@ export function setCurrentMsg(chatId, currentMessage) {
   }
 }
 
-export function createChatroom(...users) {
+export function createChatroom(id, user, title, lat, lng) {
   return {
     type: "CREATE_CHATROOM",
     payload: {
-      users:{...users}
+      id, 
+      user, 
+      title, 
+      lat, 
+      lng
     }
   }
 }

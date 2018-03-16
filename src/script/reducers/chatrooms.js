@@ -35,13 +35,16 @@ export default function reducer(state={
         };
         newObj.RoomArr.push(
           {
-              chatId: state.RoomArr.length,
+              chatId: action.payload.id,
               message: [],
               currentMessage : "",
               fetching: false,
               fetched: false,
               error: null,
-              users:action.payload.users
+              user: action.payload.user,
+              title: action.payload.title,
+              lat: action.payload.lat,
+              lng: action.payload.lng
           }
         );
         return newObj;
