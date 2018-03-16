@@ -54,22 +54,22 @@ export default class MapInterface extends React.Component {
       mapTypeId: 'roadmap',
     });
 
-    // this.map.addListener('zoom_changed', () => {
-    //   this.props.dispatch(Map.setMap({
-    //     zoom: this.map.getZoom(),
-    //   }));
-    // });
-    //
-    // this.map.addListener('drag', (e) => {
-    //   this.props.dispatch(Map.setLocation({
-    //     lat: e.latLng.lat(),
-    //     lng: e.latLng.lng()
-    //   }));
-    // });
+    this.map.addListener('zoom_changed', () => {
+      this.props.dispatch(Map.setMap({
+        zoom: this.map.getZoom(),
+      }));
+    });
+    
+    this.map.addListener('drag', (e) => {
+      this.props.dispatch(Map.setLocation({
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+      }));
+    });
 
     this.map.addListener('maptypeid_changed', () => {
       this.props.dispatch(Map.setMap({
-        maptype: this.map.getMapTypeId(),
+        mapTypeId: this.map.getMapTypeId(),
       }));
     });
 
@@ -121,20 +121,24 @@ export default class MapInterface extends React.Component {
       this.map.fitBounds(bounds);
     });
 
-
-    //add chatroom marker
-    console.log(nextProps.chatroom)
     nextProps.chatroom.RoomArr.map((val)=>{
       var newLatLng = new google.maps.LatLng(val.lat, val.lng);
-      this.dropMarker("212", val.title, newLatLng);
+      this.dropMarker(val.chatId, val.title, newLatLng);
     })
 
   }
 
   componentDidMount(){
     this.inputNode = document.getElementsByClassName('pac_input')[0];
-    this.mapNode = document.getElementsByClassName('map')[0];
+    this.mapNode = document.getElementsByClassName('map__container')[0];
+  }
 
+  shouldComponentUpdate(nextProps, nextState){
+    if(this.props.map.location.lat === nextProps.map.location.lat){
+      return false
+    }else{
+      return true
+    }
   }
 
   dropMarker(id, title, position) {
@@ -204,26 +208,32 @@ export default class MapInterface extends React.Component {
     return (
       <React.Fragment>
         {
-          map.activeChatroom.map((val)=>{
-            console.log(map)
-            return <Chatroom id={val.id} title={val.title} />
-          })
+          map.activeChatroom.id != null &&
+            <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
         }
-        <div className="map__container">
-          <div className='map__container__state'>
-              Zoom level: {map.map.zoom}<br />
-              Map type: {map.map.maptype}<br />
-              Latitude: {map.location.lat}<br />
-              Longtitude: {map.location.lng}<br />
-              Place: {map.location.place_formatted}<br />
-              Place ID: {map.location.place_id}<br />
-              Location: {map.location.place_location}<br />
-              <button className="map__container__state__positioningBtn" onClick={this.getPostion.bind(this)}>Positioning</button>
-          </div>
-          <input className='pac_input' type='text' placeholder='Enter a location' />
-          <div className='map' />
-        </div>
+        <GoogleMap map={map} getPostion={this.getPostion.bind(this)}/>
       </React.Fragment>
     );
   }
+}
+
+
+const GoogleMap = function(props){
+  return (
+        <div className="map">
+          <div className='map__state'>
+              Zoom level: {props.map.map.zoom}<br />
+              Map type: {props.map.map.maptype}<br />
+              Latitude: {props.map.location.lat}<br />
+              Longtitude: {props.map.location.lng}<br />
+              Place: {props.map.location.place_formatted}<br />
+              Place ID: {props.map.location.place_id}<br />
+              Location: {props.map.location.place_location}<br />
+              <button className="map__state__positioningBtn" onClick={props.getPostion}>Positioning</button>
+          </div>
+          <input className='pac_input' type='text' placeholder='Enter a location' />
+          <div className='map__container' />;
+
+        </div>
+        );
 }
