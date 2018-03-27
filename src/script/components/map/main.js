@@ -1,10 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
 
-import * as Map from "../actions/Map"
-import * as Chat from "../actions/Chat"
+import * as Map from "../../actions/Map"
+import * as Chat from "../../actions/Chat"
 
-import Chatroom from "./Chatroom"
+import Chatroom from "../chat/main"
+import * as Tag from "./style";
 
 @connect((store) => {
   return {
@@ -205,6 +206,8 @@ export default class MapInterface extends React.Component {
 
   render() {
     const {map} = this.props;
+    console.log(Chatroom)
+
     return (
       <React.Fragment>
         {
@@ -221,7 +224,7 @@ export default class MapInterface extends React.Component {
 const GoogleMap = function(props){
   return (
         <div className="map">
-          <div className='map__state'>
+          <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
               Map type: {props.map.map.maptype}<br />
               Latitude: {props.map.location.lat}<br />
@@ -229,10 +232,10 @@ const GoogleMap = function(props){
               Place: {props.map.location.place_formatted}<br />
               Place ID: {props.map.location.place_id}<br />
               Location: {props.map.location.place_location}<br />
-              <button className="map__state__positioningBtn" onClick={props.getPostion}>Positioning</button>
-          </div>
-          <input className='pac_input' type='text' placeholder='Enter a location' />
-          <div className='map__container' />;
+              <Tag.PositioningBtn onClick={props.getPostion}>Positioning</Tag.PositioningBtn>
+          </Tag.MapState>
+          <Tag.MapSearch className='pac_input' type='text' placeholder='Enter a location' />
+          <Tag.Map className='map__container' />;
 
         </div>
         );

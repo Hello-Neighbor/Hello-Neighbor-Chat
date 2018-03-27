@@ -3,7 +3,7 @@ export default function reducer(state={
     map:{},
     location:{}
   }, action) {
-    console.log("---------------- Action receive! ----------------"+ action.type)
+    //console.log("---------------- Action receive! ----------------"+ action.type)
     switch (action.type) {
       case "SET_ACTIVE_CHATROOM": {
         return {

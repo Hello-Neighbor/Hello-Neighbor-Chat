@@ -2,9 +2,11 @@ import React from "react"
 import { connect } from "react-redux"
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import * as Chat from "../actions/Chat"
-import * as User from "../actions/User"
-import * as Time from "../utils/time"
+import * as Chat from "../../actions/Chat"
+import * as User from "../../actions/User"
+import * as Time from "../../utils/time"
+
+import * as Tag from "./style";
 
 @connect((store) => {
   return {
@@ -52,9 +54,9 @@ export default class Chatroom extends React.Component {
   render() {
     const { chatroom, user } = this.props;
     const currentChatroom = chatroom.RoomArr[this.chatRoomId];
-    return (<div className="chatroom">
-      <div className = "chatroom__header"><h2>{this.props.title}</h2></div>
-      <div className = "chatroom__chatContainer">
+    return (<Tag.Chatroom>
+      <Tag.ChatroomHeader><h2>{this.props.title}</h2></Tag.ChatroomHeader>
+      <Tag.ChatroomContainer>
         <ReactCSSTransitionGroup transitionName="message" transitionEnterTimeout={700} transitionLeaveTimeout={700}>
           {
             currentChatroom.message.map((val)=>{
@@ -62,33 +64,33 @@ export default class Chatroom extends React.Component {
             })
           }
         </ReactCSSTransitionGroup>
-      </div>
-      <div className = "chatroom__submitBarContainer" ><input onKeyPress={this.handleKeyPress.bind(this)} value = {currentChatroom.currentMessage} onChange = {this.onInputMessage.bind(this)} className = "chatroom__submitBarContainer__submitBar" /><button onClick = {this.sendMessage.bind(this, currentChatroom.currentMessage)}>Submit</button></div>
-    </div>);
+      </Tag.ChatroomContainer>
+      <Tag.SubmitbarContainer><Tag.Submitbar onKeyPress={this.handleKeyPress.bind(this)} value = {currentChatroom.currentMessage} onChange = {this.onInputMessage.bind(this)} /><Tag.Submit onClick = {this.sendMessage.bind(this, currentChatroom.currentMessage)}>Submit</Tag.Submit></Tag.SubmitbarContainer>
+    </Tag.Chatroom>);
   }
 }
 
 
 function SentMessage(props){
   return (
-    <div className="chatroom__chatContainer__messageContainer float--right" key={props.val.id}>
-      <div className="chatroom__chatContainer__messageContainer__message">
-        <div className = "chatroom__chatContainer__messageContainer__message__messageContent">{props.val.content}</div>
-      </div>
-      <div className = "chatroom__chatContainer__messageContainer__sentTime">{props.val.timestamp}</div>
-    </div>
+    <Tag.MessageContainer className="float--right" key={props.val.id}>
+      <Tag.Message>
+        <Tag.MessageContent>{props.val.content}</Tag.MessageContent>
+      </Tag.Message>
+      <Tag.SentTime>{props.val.timestamp}</Tag.SentTime>
+    </Tag.MessageContainer>
   );
 }
 
 function ReceiveMessage(props){
   return (
-    <div className="chatroom__chatContainer__messageContainer float--left" key={props.val.id}>
-      <div className="chatroom__chatContainer__messageContainer__message">
-        <div className = "chatroom__chatContainer__messageContainer__message__userIcon"><img src={require(`../../images/${props.userImage}`)} /></div>
-        <div className = "chatroom__chatContainer__messageContainer__message__messageContent">{props.val.content}</div>
-      </div>
-      <div className = "chatroom__chatContainer__messageContainer__sentTime">{props.val.timestamp}</div>
-    </div>
+    <Tag.MessageContainer className="float--left" key={props.val.id}>
+      <Tag.Message>
+        <Tag.UserIcon><Tag.UserImage src={require(`../../../images/${props.userImage}`)} /></Tag.UserIcon>
+        <Tag.MessageContent>{props.val.content}</Tag.MessageContent>
+      </Tag.Message>
+      <Tag.SentTime>{props.val.timestamp}</Tag.SentTime>
+    </Tag.MessageContainer>
   );
 }
 
