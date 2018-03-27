@@ -15,28 +15,14 @@ export const GoogleApiComponent = (options) => (WrappedComponent) => {
 
       this.state = {
         loaded: false,
-        map: null,
         google: null
       }
     }
 
     componentDidMount() {
       this.scriptCache.google.onLoad((err, tag) => {
-        const maps = window.google.maps;
-        const props = Object.assign({}, this.props, {
-          loaded: this.state.loaded
-        });
-        let center = new maps.LatLng(this.props.lat, this.props.lng)
-
-        let mapConfig = Object.assign({}, defaultMapConfig, {
-          center, zoom: this.props.zoom
-        })
-
-        this.map = new maps.Map(this.map, mapConfig);
-
         this.setState({
           loaded: true,
-          map: this.map,
           google: window.google
         })
       });
@@ -54,14 +40,11 @@ export const GoogleApiComponent = (options) => (WrappedComponent) => {
     render() {
       const props = Object.assign({}, this.props, {
         loaded: this.state.loaded,
-        map: this.state.map,
         google: this.state.google,
-        mapComponent: this.map
       })
       return (
         <div>
           <WrappedComponent {...props} />
-          <div ref={ div => this.map = div } />
         </div>
       )
     }

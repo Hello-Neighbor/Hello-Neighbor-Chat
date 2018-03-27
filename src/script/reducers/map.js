@@ -1,15 +1,22 @@
 export default function reducer(state={
     activeChatroom:{},
     map:{},
-    location:{}
+    location:{},
+    mapInstance: null
   }, action) {
     //console.log("---------------- Action receive! ----------------"+ action.type)
     switch (action.type) {
+      case "CREATE_MAP": {
+        return {
+          ...state,
+          mapInstance: action.payload.instance
+        }
+      }
       case "SET_ACTIVE_CHATROOM": {
         return {
           ...state,
           activeChatroom: {
-            id: action.payload.id, 
+            id: action.payload.id,
             title: action.payload.title
           }
         }

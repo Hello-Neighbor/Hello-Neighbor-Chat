@@ -1,3 +1,12 @@
+export function createMap(instance) {
+  return {
+    type: "CREATE_MAP",
+    payload: {
+      instance
+    }
+  }
+}
+
 export function showChatroom(id, title) {
   return {
     type: "SET_ACTIVE_CHATROOM",
