@@ -57,23 +57,22 @@ export default class GoogleMap extends React.Component {
     if (this.props && this.props.google) {
       // google is available
       const {google} = this.props;
-      const maps = google.maps;
       let zoom = map.map.zoom;
       let lat = map.location.lat;
       let lng = map.location.lng;
-      const center = new maps.LatLng(lat, lng);
+      const center = new window.google.maps.LatLng(lat, lng);
       const mapConfig = Object.assign({}, {
         center: center,
         zoom: zoom
       })
-      this.map = new maps.Map(this.mapNode, mapConfig);
+      this.map = new window.google.maps.Map(this.mapNode, mapConfig);
 			this.props.dispatch(Map.createMap(this.map));
 
 			this.registerEvent();
 			this.autoComplete();
 
 	    this.props.chatroom.RoomArr.map((val, i)=>{
-	      var newLatLng = new google.maps.LatLng(val.lat, val.lng);
+	      var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
 				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
 	    })
 
@@ -84,7 +83,7 @@ export default class GoogleMap extends React.Component {
 
 		this.inputNode = document.getElementsByClassName('pac_input')[0];
 		// initialize the autocomplete functionality using the #pac-input input box
-		var searchBox = new google.maps.places.SearchBox(this.inputNode);
+		var searchBox = new window.google.maps.places.SearchBox(this.inputNode);
 		this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
 		let autoComplete = new window.google.maps.places.Autocomplete(this.inputNode);
 
@@ -99,7 +98,7 @@ export default class GoogleMap extends React.Component {
 			}
 
 			// For each place, get the icon, name and location.
-			var bounds = new google.maps.LatLngBounds();
+			var bounds = new window.google.maps.LatLngBounds();
 			places.forEach((place) => {
 				if (!place.geometry) {
 					console.log("Returned place contains no geometry");

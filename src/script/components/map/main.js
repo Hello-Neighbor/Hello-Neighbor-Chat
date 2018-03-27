@@ -43,12 +43,12 @@ export class MapInterface extends React.Component {
   getPostion(){
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position)=>{
-          var newLatLngCoord = new this.props.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          var geocoder = new this.props.google.maps.Geocoder();
+          var newLatLngCoord = new window.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          var geocoder = new window.google.maps.Geocoder();
           geocoder.geocode({
             'latLng': newLatLngCoord
           }, (results, status) => {
-            if (status === this.props.google.maps.GeocoderStatus.OK) {
+            if (status === window.google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 this.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
               } else {
@@ -61,7 +61,7 @@ export class MapInterface extends React.Component {
             }
           });
 
-          var bounds = new this.props.google.maps.LatLngBounds();
+          var bounds = new window.google.maps.LatLngBounds();
           bounds.extend(newLatLngCoord);
           this.props.map.mapInstance.fitBounds(bounds);
           this.props.dispatch(Map.setLocation({
@@ -84,17 +84,17 @@ export class MapInterface extends React.Component {
 
   addMarker(id, title, position){
     //var image = 'img/flagred.png';
-    var marker = new this.props.google.maps.Marker({
+    var marker = new window.google.maps.Marker({
       map: this.props.map.mapInstance,
       title,
       position,
       //icon: image,
       draggable: false,
-      animation: this.props.google.maps.Animation.DROP
+      animation: window.google.maps.Animation.DROP
     });
     this.markers.push(marker);
 
-    this.props.google.maps.event.addListener(marker, 'click', ()=>{
+    window.google.maps.event.addListener(marker, 'click', ()=>{
       this.props.dispatch(Map.showChatroom(id, title));
     });
   }
@@ -116,7 +116,7 @@ export class MapInterface extends React.Component {
           map.activeChatroom.id != null &&
             <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
         }
-        <MapContainer google={this.props.google} map={map} getPostion={this.getPostion.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
+        <MapContainer google={window.google} map={map} getPostion={this.getPostion.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
 
       </React.Fragment>
     );

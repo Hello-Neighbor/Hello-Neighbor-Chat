@@ -14,8 +14,7 @@ export const GoogleApiComponent = (options) => (WrappedComponent) => {
       super(props, context);
 
       this.state = {
-        loaded: false,
-        google: null
+        loaded: false
       }
     }
 
@@ -23,7 +22,6 @@ export const GoogleApiComponent = (options) => (WrappedComponent) => {
       this.scriptCache.google.onLoad((err, tag) => {
         this.setState({
           loaded: true,
-          google: window.google
         })
       });
     }
@@ -40,7 +38,6 @@ export const GoogleApiComponent = (options) => (WrappedComponent) => {
     render() {
       const props = Object.assign({}, this.props, {
         loaded: this.state.loaded,
-        google: this.state.google,
       })
       return (
         <div>
