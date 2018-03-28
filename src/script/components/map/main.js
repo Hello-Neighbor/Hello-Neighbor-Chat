@@ -21,6 +21,9 @@ export class MapInterface extends React.Component {
   constructor(props){
     super(props);
     this.markers = [];
+    this.state = {
+      showMenu: true
+    }
   }
 
   geoError(error) {
@@ -51,6 +54,7 @@ export class MapInterface extends React.Component {
             if (status === window.google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 this.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
+                this.setState({showMenu: false})
               } else {
                 alert('No results found');
                 return;
@@ -116,7 +120,7 @@ export class MapInterface extends React.Component {
           map.activeChatroom.id != null &&
             <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
         }
-        <MapContainer google={window.google} map={map} getPostion={this.getPostion.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
+        <MapContainer showmenu={this.state.showMenu} google={window.google} map={map} getPostion={this.getPostion.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
 
       </React.Fragment>
     );
@@ -126,7 +130,14 @@ export class MapInterface extends React.Component {
 
 const MapContainer = function(props){
   return (
-        <div className="map">
+      <React.Fragment>
+        <Tag.Interface showmenu={props.showmenu}>  
+          <Tag.Menu>
+            <Tag.PositioningBtn onClick={props.getPostion} >Positioning</Tag.PositioningBtn>
+          </Tag.Menu>
+        </Tag.Interface>
+        <Tag.Map>
+          <GoogleMap google={props.google} dropMarker = {props.dropMarker}/>
           <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
               Map type: {props.map.map.maptype}<br />
@@ -135,11 +146,9 @@ const MapContainer = function(props){
               Place: {props.map.location.place_formatted}<br />
               Place ID: {props.map.location.place_id}<br />
               Location: {props.map.location.place_location}<br />
-              <Tag.PositioningBtn onClick={props.getPostion}>Positioning</Tag.PositioningBtn>
           </Tag.MapState>
-          <GoogleMap google={props.google} dropMarker = {props.dropMarker}/>
-
-        </div>
+        </Tag.Map>
+      </React.Fragment>
         );
 }
 

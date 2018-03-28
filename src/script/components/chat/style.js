@@ -55,9 +55,13 @@ export const ChatroomContainer = styled.div`
 	color: white;
 `;
 
-export const MessageContainer = styled.div`
+export const MessageContainer = styled.div.attrs({
+  float: props => props.float || 'initial',
+})`
 	clear: both;
+  	float: ${props => props.float};
 `;
+
 
 export const Message = styled.div`
 	display: flex;

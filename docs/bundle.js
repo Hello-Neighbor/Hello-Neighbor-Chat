@@ -2226,7 +2226,7 @@ exports.default = Chatroom;
 function SentMessage(props) {
   return _react2.default.createElement(
     Tag.MessageContainer,
-    { className: "float--right", key: props.val.id },
+    { float: "right", key: props.val.id },
     _react2.default.createElement(
       Tag.Message,
       null,
@@ -2247,7 +2247,7 @@ function SentMessage(props) {
 function ReceiveMessage(props) {
   return _react2.default.createElement(
     Tag.MessageContainer,
-    { className: "float--left", key: props.val.id },
+    { float: "left", key: props.val.id },
     _react2.default.createElement(
       Tag.Message,
       null,
@@ -4679,12 +4679,14 @@ function setLocation(params) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.MapSearch = exports.Map = exports.PositioningBtn = exports.MapState = undefined;
+exports.Menu = exports.Interface = exports.MapSearch = exports.Map = exports.PositioningBtn = exports.MapState = undefined;
 
-var _templateObject = _taggedTemplateLiteral(['\n\tposition: absolute;\n\tpadding:10px;\n\tleft: 10px;\n\tbottom: 10px;\n\tz-index: 100;\n\tbackground: rgba(0, 0, 0, 0.5);\n\tcolor: white;\n\tborder-radius: 5px;\n\tdisplay: flex;\n\talign-items: center;\n'], ['\n\tposition: absolute;\n\tpadding:10px;\n\tleft: 10px;\n\tbottom: 10px;\n\tz-index: 100;\n\tbackground: rgba(0, 0, 0, 0.5);\n\tcolor: white;\n\tborder-radius: 5px;\n\tdisplay: flex;\n\talign-items: center;\n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n\tcursor: pointer;\n\tmargin-left: 30px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 100px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n'], ['\n\tcursor: pointer;\n\tmargin-left: 30px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 100px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n']),
-    _templateObject3 = _taggedTemplateLiteral(['\n\tposition:absolute;\n\ttop:0px;\n\tleft:0px;\n\theight:100%;\n\twidth:100%;\n'], ['\n\tposition:absolute;\n\ttop:0px;\n\tleft:0px;\n\theight:100%;\n\twidth:100%;\n']),
-    _templateObject4 = _taggedTemplateLiteral(['\n\tmargin-top: 10px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 32px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\twidth:600px;\n'], ['\n\tmargin-top: 10px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 32px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\twidth:600px;\n']);
+var _templateObject = _taggedTemplateLiteral(["\n\tposition: absolute;\n\tpadding:10px;\n\tleft: 10px;\n\tbottom: 10px;\n\tz-index: 1;\n\tbackground: rgba(0, 0, 0, 0.5);\n\tcolor: white;\n\tborder-radius: 5px;\n\tdisplay: flex;\n\talign-items: center;\n"], ["\n\tposition: absolute;\n\tpadding:10px;\n\tleft: 10px;\n\tbottom: 10px;\n\tz-index: 1;\n\tbackground: rgba(0, 0, 0, 0.5);\n\tcolor: white;\n\tborder-radius: 5px;\n\tdisplay: flex;\n\talign-items: center;\n"]),
+    _templateObject2 = _taggedTemplateLiteral(["\n\tcursor: pointer;\n\tborder: 1px solid transparent;\n\tborder-radius: 100%;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 100px;\n\twidth: 100px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\ttransition: all .5s;\n\t&:hover{\n\t\theight: 130px;\n\t\twidth: 130px;\n\t\tbackground: rgba(255, 0, 0, .5);\n\t\tcolor: white;\n\t}\n"], ["\n\tcursor: pointer;\n\tborder: 1px solid transparent;\n\tborder-radius: 100%;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 100px;\n\twidth: 100px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\ttransition: all .5s;\n\t&:hover{\n\t\theight: 130px;\n\t\twidth: 130px;\n\t\tbackground: rgba(255, 0, 0, .5);\n\t\tcolor: white;\n\t}\n"]),
+    _templateObject3 = _taggedTemplateLiteral(["\n\tposition:absolute;\n\ttop:0px;\n\tleft:0px;\n\theight:100%;\n\twidth:100%;\n"], ["\n\tposition:absolute;\n\ttop:0px;\n\tleft:0px;\n\theight:100%;\n\twidth:100%;\n"]),
+    _templateObject4 = _taggedTemplateLiteral(["\n\tmargin-top: 10px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 32px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\twidth:600px;\n"], ["\n\tmargin-top: 10px;\n\tborder: 1px solid transparent;\n\tborder-radius: 2px 0 0 2px;\n\tbox-sizing: border-box;\n\t-moz-box-sizing: border-box;\n\theight: 32px;\n\toutline: none;\n\tbox-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n\twidth:600px;\n"]),
+    _templateObject5 = _taggedTemplateLiteral(["\n\tposition: absolute;\n\twidth: 100vw;\n\theight: 100vh;\n\tz-index: 1;\n\tdisplay: ", "\n"], ["\n\tposition: absolute;\n\twidth: 100vw;\n\theight: 100vh;\n\tz-index: 1;\n\tdisplay: ", "\n"]),
+    _templateObject6 = _taggedTemplateLiteral(["\n\tdisplay: flex;\n\tjustify-content: center;\n\talign-items: center;\n\twidth: 100%;\n\theight: 100%;\n\tbackground: rgba(0, 0, 0, 0.5);\n\n"], ["\n\tdisplay: flex;\n\tjustify-content: center;\n\talign-items: center;\n\twidth: 100%;\n\theight: 100%;\n\tbackground: rgba(0, 0, 0, 0.5);\n\n"]);
 
 var _styledComponents = __webpack_require__(35);
 
@@ -4701,6 +4703,16 @@ var PositioningBtn = exports.PositioningBtn = _styledComponents2.default.button(
 var Map = exports.Map = _styledComponents2.default.div(_templateObject3);
 
 var MapSearch = exports.MapSearch = _styledComponents2.default.input(_templateObject4);
+
+var Interface = exports.Interface = _styledComponents2.default.div.attrs({
+	showmenu: function showmenu(props) {
+		return props.showmenu ? "initial" : "none";
+	}
+})(_templateObject5, function (props) {
+	return props.showmenu;
+});
+
+var Menu = exports.Menu = _styledComponents2.default.div(_templateObject6);
 
 /***/ }),
 /* 38 */
@@ -24974,7 +24986,7 @@ var _templateObject = _taggedTemplateLiteral(['\n\tposition:absolute;\n\tz-index
     _templateObject4 = _taggedTemplateLiteral(['\n\twidth: 100%;\n\tmargin-left: 5px;\n\tmargin-right: 5px;\n'], ['\n\twidth: 100%;\n\tmargin-left: 5px;\n\tmargin-right: 5px;\n']),
     _templateObject5 = _taggedTemplateLiteral(['\n\tfloat: right;\n'], ['\n\tfloat: right;\n']),
     _templateObject6 = _taggedTemplateLiteral(['\n\twidth:100%;\n\theight:100%;\n\toverflow-y: scroll;\n\tpadding:20px;\n\tbox-sizing: border-box;\n\tcolor: white;\n'], ['\n\twidth:100%;\n\theight:100%;\n\toverflow-y: scroll;\n\tpadding:20px;\n\tbox-sizing: border-box;\n\tcolor: white;\n']),
-    _templateObject7 = _taggedTemplateLiteral(['\n\tclear: both;\n'], ['\n\tclear: both;\n']),
+    _templateObject7 = _taggedTemplateLiteral(['\n\tclear: both;\n  \tfloat: ', ';\n'], ['\n\tclear: both;\n  \tfloat: ', ';\n']),
     _templateObject8 = _taggedTemplateLiteral(['\n\tdisplay: flex;\n\tmargin-bottom: 10px;\n\n'], ['\n\tdisplay: flex;\n\tmargin-bottom: 10px;\n\n']),
     _templateObject9 = _taggedTemplateLiteral(['\n\tfloat:left;\n\tdisplay: inline;\n'], ['\n\tfloat:left;\n\tdisplay: inline;\n']),
     _templateObject10 = _taggedTemplateLiteral(['\n\tborder-radius: 100%;\n\twidth: 50px;\n\theight: auto;\n'], ['\n\tborder-radius: 100%;\n\twidth: 50px;\n\theight: auto;\n']),
@@ -25001,7 +25013,13 @@ var Submit = exports.Submit = _styledComponents2.default.button(_templateObject5
 
 var ChatroomContainer = exports.ChatroomContainer = _styledComponents2.default.div(_templateObject6);
 
-var MessageContainer = exports.MessageContainer = _styledComponents2.default.div(_templateObject7);
+var MessageContainer = exports.MessageContainer = _styledComponents2.default.div.attrs({
+	float: function float(props) {
+		return props.float || 'initial';
+	}
+})(_templateObject7, function (props) {
+	return props.float;
+});
 
 var Message = exports.Message = _styledComponents2.default.div(_templateObject8);
 
@@ -26916,6 +26934,9 @@ var MapInterface = exports.MapInterface = (_dec = (0, _reactRedux.connect)(funct
     var _this = _possibleConstructorReturn(this, (MapInterface.__proto__ || Object.getPrototypeOf(MapInterface)).call(this, props));
 
     _this.markers = [];
+    _this.state = {
+      showMenu: true
+    };
     return _this;
   }
 
@@ -26952,6 +26973,7 @@ var MapInterface = exports.MapInterface = (_dec = (0, _reactRedux.connect)(funct
             if (status === window.google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 _this2.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
+                _this2.setState({ showMenu: false });
               } else {
                 alert('No results found');
                 return;
@@ -27023,7 +27045,7 @@ var MapInterface = exports.MapInterface = (_dec = (0, _reactRedux.connect)(funct
         _react2.default.Fragment,
         null,
         map.activeChatroom.id != null && _react2.default.createElement(_main2.default, { id: map.activeChatroom.id, title: map.activeChatroom.title }),
-        _react2.default.createElement(MapContainer, { google: window.google, map: map, getPostion: this.getPostion.bind(this), dropMarker: this.dropMarker.bind(this) })
+        _react2.default.createElement(MapContainer, { showmenu: this.state.showMenu, google: window.google, map: map, getPostion: this.getPostion.bind(this), dropMarker: this.dropMarker.bind(this) })
       );
     }
   }]);
@@ -27034,39 +27056,51 @@ var MapInterface = exports.MapInterface = (_dec = (0, _reactRedux.connect)(funct
 
 var MapContainer = function MapContainer(props) {
   return _react2.default.createElement(
-    "div",
-    { className: "map" },
+    _react2.default.Fragment,
+    null,
     _react2.default.createElement(
-      Tag.MapState,
-      null,
-      "Zoom level: ",
-      props.map.map.zoom,
-      _react2.default.createElement("br", null),
-      "Map type: ",
-      props.map.map.maptype,
-      _react2.default.createElement("br", null),
-      "Latitude: ",
-      props.map.location.lat,
-      _react2.default.createElement("br", null),
-      "Longtitude: ",
-      props.map.location.lng,
-      _react2.default.createElement("br", null),
-      "Place: ",
-      props.map.location.place_formatted,
-      _react2.default.createElement("br", null),
-      "Place ID: ",
-      props.map.location.place_id,
-      _react2.default.createElement("br", null),
-      "Location: ",
-      props.map.location.place_location,
-      _react2.default.createElement("br", null),
+      Tag.Interface,
+      { showmenu: props.showmenu },
       _react2.default.createElement(
-        Tag.PositioningBtn,
-        { onClick: props.getPostion },
-        "Positioning"
+        Tag.Menu,
+        null,
+        _react2.default.createElement(
+          Tag.PositioningBtn,
+          { onClick: props.getPostion },
+          "Positioning"
+        )
       )
     ),
-    _react2.default.createElement(_GoogleMap2.default, { google: props.google, dropMarker: props.dropMarker })
+    _react2.default.createElement(
+      Tag.Map,
+      null,
+      _react2.default.createElement(_GoogleMap2.default, { google: props.google, dropMarker: props.dropMarker }),
+      _react2.default.createElement(
+        Tag.MapState,
+        null,
+        "Zoom level: ",
+        props.map.map.zoom,
+        _react2.default.createElement("br", null),
+        "Map type: ",
+        props.map.map.maptype,
+        _react2.default.createElement("br", null),
+        "Latitude: ",
+        props.map.location.lat,
+        _react2.default.createElement("br", null),
+        "Longtitude: ",
+        props.map.location.lng,
+        _react2.default.createElement("br", null),
+        "Place: ",
+        props.map.location.place_formatted,
+        _react2.default.createElement("br", null),
+        "Place ID: ",
+        props.map.location.place_id,
+        _react2.default.createElement("br", null),
+        "Location: ",
+        props.map.location.place_location,
+        _react2.default.createElement("br", null)
+      )
+    )
   );
 };
 
@@ -27255,10 +27289,10 @@ var GoogleMap = (_dec = (0, _reactRedux.connect)(function (store) {
 		value: function registerEvent() {
 			var _this4 = this;
 
-			this.map.addListener('drag', function (e) {
+			this.map.addListener('drag', function () {
 				_this4.props.dispatch(Map.setLocation({
-					lat: e.latLng.lat(),
-					lng: e.latLng.lng()
+					lat: _this4.map.getCenter().lat(),
+					lng: _this4.map.getCenter().lng()
 				}));
 			});
 

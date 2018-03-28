@@ -73,7 +73,7 @@ export default class Chatroom extends React.Component {
 
 function SentMessage(props){
   return (
-    <Tag.MessageContainer className="float--right" key={props.val.id}>
+    <Tag.MessageContainer float="right" key={props.val.id}>
       <Tag.Message>
         <Tag.MessageContent>{props.val.content}</Tag.MessageContent>
       </Tag.Message>
@@ -84,7 +84,7 @@ function SentMessage(props){
 
 function ReceiveMessage(props){
   return (
-    <Tag.MessageContainer className="float--left" key={props.val.id}>
+    <Tag.MessageContainer float="left" key={props.val.id}>
       <Tag.Message>
         <Tag.UserIcon><Tag.UserImage src={require(`../../../images/${props.userImage}`)} /></Tag.UserIcon>
         <Tag.MessageContent>{props.val.content}</Tag.MessageContent>

@@ -126,10 +126,10 @@ export default class GoogleMap extends React.Component {
 	}
 
 	registerEvent(){
-		  this.map.addListener('drag', (e) => {
+		  this.map.addListener('drag', () => {
 		    this.props.dispatch(Map.setLocation({
-		      lat: e.latLng.lat(),
-		      lng: e.latLng.lng()
+		      lat: this.map.getCenter().lat(),
+		      lng: this.map.getCenter().lng()
 		    }));
 		  });
 
