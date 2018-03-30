@@ -34,12 +34,16 @@ export const ControlButton = styled.button`
 	}
 `;
 
-export const Map = styled.div`
+export const Map = styled.div.attrs({
+	blur: props => props.blur ? 10 : 0,
+})`
 	position:absolute;
 	top:0px;
 	left:0px;
 	height:100%;
 	width:100%;
+	filter: blur(${props => props.blur}px);
+	transition: all .5s;
 `;
 
 export const MapSearch = styled.input`
@@ -71,5 +75,4 @@ export const Menu = styled.div`
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
-
 `;

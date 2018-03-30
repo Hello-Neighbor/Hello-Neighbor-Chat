@@ -148,7 +148,7 @@ const MapContainer = function(props){
             <Tag.ControlButton onClick={props.searchRoom} >Search Chatroom</Tag.ControlButton>
           </Tag.Menu>
         </Tag.Interface>
-        <Tag.Map>
+        <Tag.Map blur={props.showmenu}>
           <GoogleMap google={props.google} dropMarker = {props.dropMarker}/>
           <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
