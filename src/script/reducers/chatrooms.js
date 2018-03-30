@@ -23,7 +23,7 @@ export default function reducer(state={
           {
               messageId: state.RoomArr[action.payload.chatId].message.length,
               content: action.payload.content,
-              timestamp: action.payload.timestamp, 
+              timestamp: action.payload.timestamp,
               userId: action.payload.userId
           }
         );
@@ -33,6 +33,9 @@ export default function reducer(state={
         var newObj = {
           ...state
         };
+
+        var hashtags = action.payload.hashtags.split("#");
+
         newObj.RoomArr.push(
           {
               chatId: action.payload.id,
@@ -44,7 +47,8 @@ export default function reducer(state={
               user: action.payload.user,
               title: action.payload.title,
               lat: action.payload.lat,
-              lng: action.payload.lng
+              lng: action.payload.lng,
+              hashtags: hashtags.splice(1, hashtags.length-1)
           }
         );
         return newObj;

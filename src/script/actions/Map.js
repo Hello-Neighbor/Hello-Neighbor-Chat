@@ -7,6 +7,15 @@ export function createMap(instance) {
   }
 }
 
+export function searchChatroom(hashtag){
+  return {
+    type: "SEARCH_CHATROOM",
+    payload: {
+      hashtag
+    }
+  }
+}
+
 export function showChatroom(id, title) {
   return {
     type: "SET_ACTIVE_CHATROOM",

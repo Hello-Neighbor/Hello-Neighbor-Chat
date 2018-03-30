@@ -38,10 +38,10 @@ export default class GoogleMap extends React.Component {
 
     //for prototyping
 
-    this.props.dispatch(Chat.createChatroom(0, this.user, "Running", -33.8788, 151.2295));
-    this.props.dispatch(Chat.createChatroom(1, this.user, "Coding", -33.8388, 151.2495));
-    this.props.dispatch(Chat.createChatroom(2, this.user, "Mountain Climbing", -33.9, 151.3));
-    this.props.dispatch(Chat.createChatroom(3, this.user, "Bicycling", -33.88, 151.2095));
+    this.props.dispatch(Chat.createChatroom(0, this.user, "Running", -33.8788, 151.2295, "#sport#running"));
+    this.props.dispatch(Chat.createChatroom(1, this.user, "Coding", -33.8388, 151.2495, "#coding#indoor"));
+    this.props.dispatch(Chat.createChatroom(2, this.user, "Mountain Climbing", -33.9, 151.3, "#sport#outdoor"));
+    this.props.dispatch(Chat.createChatroom(3, this.user, "Bicycling", -33.88, 151.2095, "#sport#single"));
 
   }
 
@@ -151,10 +151,14 @@ export default class GoogleMap extends React.Component {
 
 		this.map.addListener('dblclick', (e)=>{
 			var chatroom = prompt("Please enter the name of chatrooom");
-			if (chatroom != null) {
-				var id = this.props.chatroom.RoomArr.length;
-    			this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng()));
-    			this.props.dropMarker(id, chatroom, e.latLng);
+      if (chatroom != null) {
+      var hashtags = prompt("Please enter the hashtag of the chatrooom", "e.g. #sport #running");
+        if (hashtags != null){
+          hashtags = hashtags.replace(/\s/g,'');
+          var id = this.props.chatroom.RoomArr.length;
+          this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
+          this.props.dropMarker(id, chatroom, e.latLng);
+        }
 			}
 		});
 	}

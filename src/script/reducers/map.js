@@ -45,6 +45,9 @@ export default function reducer(state={
           }
         }
       }
+      case "SEARCH_CHATROOM": {
+
+      }
     }
     return state
 }

@@ -35,7 +35,7 @@ export const ControlButton = styled.button`
 `;
 
 export const Map = styled.div.attrs({
-	blur: props => props.blur ? 10 : 0,
+	blur: props => props.loaded ? 10 : 0,
 })`
 	position:absolute;
 	top:0px;
@@ -43,7 +43,7 @@ export const Map = styled.div.attrs({
 	height:100%;
 	width:100%;
 	filter: blur(${props => props.blur}px);
-	transition: all .5s;
+	transition: all .1s;
 `;
 
 export const MapSearch = styled.input`
@@ -58,12 +58,31 @@ export const MapSearch = styled.input`
 	width:600px;
 `;
 
+export const Loading = styled.div.attrs({
+	loaded: props => props.loaded ? "none" : "initial",
+})`
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1;
+	display: ${props => props.loaded}
+`;
+
+export const LoadingScreen = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+`;
+
 export const Interface = styled.div.attrs({
 	showmenu: props => props.showmenu ? "initial" : "none",
 })`
 	position: absolute;
 	width: 100vw;
-	height: 100vh;
+	height: 10vh;
 	z-index: 1;
 	display: ${props => props.showmenu}
 `;
@@ -74,5 +93,44 @@ export const Menu = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 1);
+`;
+
+export const Filter = styled.div`
+	display:flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const FilterInput = styled.input`
+	position: absolute;
+	margin-top: 10px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	width:600px;
+	background: transparent;
+	z-index: 11;
+`;
+
+export const AutocompleteInput = styled.input.attrs({
+	disabled: "disabled"
+})`
+	position: absolute;
+	margin-top: 10px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	width:600px;
+	background: transparent;
+	z-index: 10;
+	color: #AAAAAA;
 `;

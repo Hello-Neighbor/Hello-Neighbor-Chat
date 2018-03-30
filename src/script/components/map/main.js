@@ -22,7 +22,8 @@ export class MapInterface extends React.Component {
     super(props);
     this.markers = [];
     this.state = {
-      showMenu: true
+      showMenu: true,
+      hashtagSearch: ""
     }
   }
 
@@ -54,7 +55,6 @@ export class MapInterface extends React.Component {
             if (status === window.google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 this.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
-                this.setState({showMenu: false})
               } else {
                 alert('No results found');
                 return;
@@ -110,45 +110,66 @@ export class MapInterface extends React.Component {
     this.markers = [];
   }
 
-  createRoom(){
-    // Bias the SearchBox results towards current map's viewport.
-    this.setState({showMenu: false})
-
+  filter(e){
+    //console.log(e.target.value)
+    this.setState({
+      hashtagSearch: e.target.value + "test"
+    });
   }
-
-  searchRoom(){
-
-  }
-
 
   render() {
-    const {map} = this.props;
-
+    const {map, chatroom} = this.props;
     return (
       <React.Fragment>
         {
           map.activeChatroom.id != null &&
             <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
         }
-        <MapContainer showmenu={this.state.showMenu} google={window.google} map={map} getPostion={this.getPostion.bind(this)} createRoom = {this.createRoom.bind(this)} searchRoom = {this.searchRoom.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
+
+        <Tag.Loading loaded={this.props.loaded}>
+          <Tag.LoadingScreen></Tag.LoadingScreen>
+        </Tag.Loading>
+        <Tag.Interface showmenu={this.state.showMenu}>
+          <Tag.Menu>
+            <Tag.ControlButton onClick={this.getPostion.bind(this)} >Positioning</Tag.ControlButton>
+          </Tag.Menu>
+          <Tag.Filter>
+            <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
+            <Tag.AutocompleteInput value={this.state.hashtagSearch} />
+            <HashTagList chatrooms={chatroom.RoomArr} />
+          </Tag.Filter>
+        </Tag.Interface>
+        <MapContainer
+          filter={this.filter.bind(this)}
+          loaded={this.props.loaded}
+          google={window.google} map={map}
+          dropMarker = {this.dropMarker.bind(this)}
+        />
 
       </React.Fragment>
     );
   }
 }
 
+const HashTagList = function(props){
+  return(
+    <datalist id="hashtags">
+      {
+        props.chatrooms.map((chatroom)=>{
+          return chatroom.hashtags.map((hashtag)=>{
+            return <option label={hashtag} value={hashtag}></option>
+          })
+        })
+      }
+    </datalist>
+);
+}
+
 
 const MapContainer = function(props){
   return (
       <React.Fragment>
-        <Tag.Interface showmenu={props.showmenu}>  
-          <Tag.Menu>
-            <Tag.ControlButton onClick={props.getPostion} >Positioning</Tag.ControlButton>
-            <Tag.ControlButton onClick={props.createRoom} >Create Chatroom</Tag.ControlButton>
-            <Tag.ControlButton onClick={props.searchRoom} >Search Chatroom</Tag.ControlButton>
-          </Tag.Menu>
-        </Tag.Interface>
-        <Tag.Map blur={props.showmenu}>
+        <Tag.Map blur={props.loaded}>
           <GoogleMap google={props.google} dropMarker = {props.dropMarker}/>
           <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
