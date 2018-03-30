@@ -18,33 +18,36 @@ export default class GoogleMap extends React.Component {
 		super(props);
 		this.map = null;
 		this.inputNode = {};
+
+		//prototype
+		this.user = "johnhckuo";
 	}
 
 	componentWillMount() {
     this.props.dispatch(Map.setMap({
-      zoom: 13,
-      mapTypeId: 'roadmap'
+		zoom: 13,
+		mapTypeId: 'roadmap'
     }));
     this.props.dispatch(Map.setLocation({
-      lat: -33.8688,
-      lng: 151.2195,
-      place_formatted: '',
-      place_id: '',
-      place_location: '',
+		lat: -33.8688,
+		lng: 151.2195,
+		place_formatted: '',
+		place_id: '',
+		place_location: '',
     }));
 
     //for prototyping
 
-    this.props.dispatch(Chat.createChatroom(0, "johnhckuo", "Running", -33.8788, 151.2295));
-    this.props.dispatch(Chat.createChatroom(1, "johnhckuo", "Coding", -33.8388, 151.2495));
-    this.props.dispatch(Chat.createChatroom(2, "johnhckuo", "Mountain Climbing", -33.9, 151.3));
-    this.props.dispatch(Chat.createChatroom(3, "johnhckuo", "Bicycling", -33.88, 151.2095));
+    this.props.dispatch(Chat.createChatroom(0, this.user, "Running", -33.8788, 151.2295));
+    this.props.dispatch(Chat.createChatroom(1, this.user, "Coding", -33.8388, 151.2495));
+    this.props.dispatch(Chat.createChatroom(2, this.user, "Mountain Climbing", -33.9, 151.3));
+    this.props.dispatch(Chat.createChatroom(3, this.user, "Bicycling", -33.88, 151.2095));
 
   }
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.google !== this.props.google) {
-		  this.loadMap();
+			this.loadMap();
 		}
 	}
 
@@ -52,31 +55,32 @@ export default class GoogleMap extends React.Component {
 		this.loadMap();
 	}
 
-  loadMap() {
+	loadMap() {
 		const { map } = this.props;
-    if (this.props && this.props.google) {
-      // google is available
-      const {google} = this.props;
-      let zoom = map.map.zoom;
-      let lat = map.location.lat;
-      let lng = map.location.lng;
-      const center = new window.google.maps.LatLng(lat, lng);
-      const mapConfig = Object.assign({}, {
-        center: center,
-        zoom: zoom
-      })
-      this.map = new window.google.maps.Map(this.mapNode, mapConfig);
+		if (this.props && this.props.google) {
+			// google is available
+			const {google} = this.props;
+			let zoom = map.map.zoom;
+			let lat = map.location.lat;
+			let lng = map.location.lng;
+			const center = new window.google.maps.LatLng(lat, lng);
+			const mapConfig = Object.assign({}, {
+			center: center,
+			zoom: zoom,
+			disableDoubleClickZoom: true
+			})
+			this.map = new window.google.maps.Map(this.mapNode, mapConfig);
 			this.props.dispatch(Map.createMap(this.map));
 
 			this.registerEvent();
 			this.autoComplete();
 
-	    this.props.chatroom.RoomArr.map((val, i)=>{
-	      var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
-	    })
+		    this.props.chatroom.RoomArr.map((val, i)=>{
+		    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+			this.props.dropMarker(val.chatId, val.title, newLatLng, i);
+		    })
 
-    }
+		}
 	}
 
 	autoComplete(){
@@ -126,24 +130,33 @@ export default class GoogleMap extends React.Component {
 	}
 
 	registerEvent(){
-		  this.map.addListener('drag', () => {
-		    this.props.dispatch(Map.setLocation({
-		      lat: this.map.getCenter().lat(),
-		      lng: this.map.getCenter().lng()
-		    }));
-		  });
+		this.map.addListener('drag', () => {
+			this.props.dispatch(Map.setLocation({
+			  lat: this.map.getCenter().lat(),
+			  lng: this.map.getCenter().lng()
+			}));
+		});
 
-		  this.map.addListener('maptypeid_changed', () => {
-		    this.props.dispatch(Map.setMap({
-		      mapTypeId: this.map.getMapTypeId(),
-		    }));
-		  });
+		this.map.addListener('maptypeid_changed', () => {
+			this.props.dispatch(Map.setMap({
+			  mapTypeId: this.map.getMapTypeId(),
+			}));
+		});
 
-		  this.map.addListener('zoom_changed', () => {
-		    this.props.dispatch(Map.setMap({
-		      zoom: this.map.getZoom(),
-		    }));
-		  });
+		this.map.addListener('zoom_changed', () => {
+			this.props.dispatch(Map.setMap({
+			  zoom: this.map.getZoom(),
+			}));
+		});
+
+		this.map.addListener('dblclick', (e)=>{
+			var chatroom = prompt("Please enter the name of chatrooom");
+			if (chatroom != null) {
+				var id = this.props.chatroom.RoomArr.length;
+    			this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng()));
+    			this.props.dropMarker(id, chatroom, e.latLng);
+			}
+		});
 	}
 
   render() {

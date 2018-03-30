@@ -13,7 +13,7 @@ export const MapState = styled.div`
 	align-items: center;
 `;
 
-export const PositioningBtn = styled.button`
+export const ControlButton = styled.button`
 	cursor: pointer;
 	border: 1px solid transparent;
 	border-radius: 100%;
@@ -24,6 +24,8 @@ export const PositioningBtn = styled.button`
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 	transition: all .5s;
+	margin-left:20px;
+	margin-right:20px;
 	&:hover{
 		height: 130px;
 		width: 130px;

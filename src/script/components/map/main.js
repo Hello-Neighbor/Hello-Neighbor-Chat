@@ -80,7 +80,7 @@ export class MapInterface extends React.Component {
 
   dropMarker(id, title, position, i) {
       i = i || 0;
-      this.clearMarkers();
+      //this.clearMarkers();
       setTimeout(()=>{
         this.addMarker(id, title, position);
       }, i * 300);
@@ -110,6 +110,16 @@ export class MapInterface extends React.Component {
     this.markers = [];
   }
 
+  createRoom(){
+    // Bias the SearchBox results towards current map's viewport.
+    this.setState({showMenu: false})
+
+  }
+
+  searchRoom(){
+
+  }
+
 
   render() {
     const {map} = this.props;
@@ -120,7 +130,7 @@ export class MapInterface extends React.Component {
           map.activeChatroom.id != null &&
             <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
         }
-        <MapContainer showmenu={this.state.showMenu} google={window.google} map={map} getPostion={this.getPostion.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
+        <MapContainer showmenu={this.state.showMenu} google={window.google} map={map} getPostion={this.getPostion.bind(this)} createRoom = {this.createRoom.bind(this)} searchRoom = {this.searchRoom.bind(this)} dropMarker = {this.dropMarker.bind(this)}/>
 
       </React.Fragment>
     );
@@ -133,7 +143,9 @@ const MapContainer = function(props){
       <React.Fragment>
         <Tag.Interface showmenu={props.showmenu}>  
           <Tag.Menu>
-            <Tag.PositioningBtn onClick={props.getPostion} >Positioning</Tag.PositioningBtn>
+            <Tag.ControlButton onClick={props.getPostion} >Positioning</Tag.ControlButton>
+            <Tag.ControlButton onClick={props.createRoom} >Create Chatroom</Tag.ControlButton>
+            <Tag.ControlButton onClick={props.searchRoom} >Search Chatroom</Tag.ControlButton>
           </Tag.Menu>
         </Tag.Interface>
         <Tag.Map>
