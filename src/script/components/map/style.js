@@ -13,6 +13,29 @@ export const MapState = styled.div`
 	align-items: center;
 `;
 
+/*---------------
+  Map Interface 
+---------------*/
+
+export const Interface = styled.div.attrs({
+	translatey: props => props.showmenu ? "0px" : "-10vh",
+})`
+	position: absolute;
+	z-index: 1;
+	transition: transform 1s;
+	width: 100vw;
+	transform: translateY(${props => props.translatey});
+`;
+
+export const Menu = styled.div`
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 10px;
+	right : 10px;
+`;
+
 export const ControlButton = styled.button`
 	cursor: pointer;
 	border: 1px solid transparent;
@@ -27,8 +50,6 @@ export const ControlButton = styled.button`
 	margin-left:20px;
 	margin-right:20px;
 	&:hover{
-		height: 130px;
-		width: 130px;
 		background: rgba(255, 0, 0, .5);
 		color: white;
 	}
@@ -46,7 +67,38 @@ export const Map = styled.div.attrs({
 	transition: all .1s;
 `;
 
-export const MapSearch = styled.input`
+
+/*---------------
+  Map Search bar 
+---------------*/
+
+export const Search = styled.div`
+	position: absolute;
+	margin-top: 20px;
+	margin-left: 20px;
+	box-sizing: border-box;
+	z-index: 2;
+
+`;
+
+export const Select = styled.select`
+	background: transparent;
+	border: none;
+	font-size: 14px;
+	height: 29px;
+	padding: 5px; 
+	color: #fff;
+
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background-color: #3b8ec2;
+
+`;
+
+export const LocationSearch = styled.input.attrs({
+	currentmode: props => props.currentmode === "Location" ? "inherit" : "none",
+})`
 	margin-top: 10px;
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
@@ -56,50 +108,20 @@ export const MapSearch = styled.input`
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 	width:600px;
+	display: ${props => props.currentmode};
 `;
 
-export const Loading = styled.div.attrs({
-	loaded: props => props.loaded ? "none" : "initial",
+export const Filter = styled.div.attrs({
+	currentmode: props => props.currentmode === "Filter" ? "inherit" : "none",
 })`
-	position: absolute;
-	width: 100vw;
-	height: 100vh;
-	z-index: 1;
-	display: ${props => props.loaded}
-`;
-
-export const LoadingScreen = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-`;
-
-export const Interface = styled.div.attrs({
-	showmenu: props => props.showmenu ? "initial" : "none",
-})`
-	position: absolute;
-	width: 100vw;
-	height: 10vh;
-	z-index: 1;
-	display: ${props => props.showmenu}
-`;
-
-export const Menu = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 1);
-`;
-
-export const Filter = styled.div`
-	display:flex;
-	justify-content: center;
-	align-items: center;
+	margin-top: 10px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	display:${props => props.currentmode};
 `;
 
 export const FilterInput = styled.input`
@@ -128,9 +150,35 @@ export const AutocompleteInput = styled.input.attrs({
 	-moz-box-sizing: border-box;
 	height: 32px;
 	outline: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 	width:600px;
 	background: transparent;
 	z-index: 10;
 	color: #AAAAAA;
 `;
+
+/*---------------
+     Loading 
+---------------*/
+
+
+export const Loading = styled.div.attrs({
+	loaded: props => props.loaded ? "none" : "initial",
+})`
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1;
+	display: ${props => props.loaded}
+`;
+
+export const LoadingScreen = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+`;
+
+
+

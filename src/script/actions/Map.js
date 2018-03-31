@@ -51,3 +51,13 @@ export function setLocation(params) {
     }
   }
 }
+
+export function switchSearchMode(mode) {
+  return {
+    type: "SWITCH_SEARCH_MODE",
+    payload: {
+      mode
+    }
+  }
+}
+

@@ -2,7 +2,8 @@ export default function reducer(state={
     activeChatroom:{},
     map:{},
     location:{},
-    mapInstance: null
+    mapInstance: null,
+    searchMode: "Location"
   }, action) {
     //console.log("---------------- Action receive! ----------------"+ action.type)
     switch (action.type) {
@@ -45,8 +46,11 @@ export default function reducer(state={
           }
         }
       }
-      case "SEARCH_CHATROOM": {
-
+      case "SWITCH_SEARCH_MODE": {
+        return {
+          ...state,
+          searchMode: action.payload.mode
+        }
       }
     }
     return state

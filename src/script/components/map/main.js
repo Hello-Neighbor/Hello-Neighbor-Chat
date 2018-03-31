@@ -23,7 +23,6 @@ export class MapInterface extends React.Component {
     this.markers = [];
     this.state = {
       showMenu: true,
-      hashtagSearch: ""
     }
   }
 
@@ -110,12 +109,9 @@ export class MapInterface extends React.Component {
     this.markers = [];
   }
 
-  filter(e){
-    //console.log(e.target.value)
-    this.setState({
-      hashtagSearch: e.target.value + "test"
-    });
-  }
+
+
+
 
   render() {
     const {map, chatroom} = this.props;
@@ -133,17 +129,13 @@ export class MapInterface extends React.Component {
           <Tag.Menu>
             <Tag.ControlButton onClick={this.getPostion.bind(this)} >Positioning</Tag.ControlButton>
           </Tag.Menu>
-          <Tag.Filter>
-            <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
-            <Tag.AutocompleteInput value={this.state.hashtagSearch} />
-            <HashTagList chatrooms={chatroom.RoomArr} />
-          </Tag.Filter>
         </Tag.Interface>
         <MapContainer
-          filter={this.filter.bind(this)}
           loaded={this.props.loaded}
           google={window.google} map={map}
           dropMarker = {this.dropMarker.bind(this)}
+          addMarker = {this.addMarker.bind(this)}
+          clearMarkers = {this.clearMarkers.bind(this)}
         />
 
       </React.Fragment>
@@ -151,26 +143,12 @@ export class MapInterface extends React.Component {
   }
 }
 
-const HashTagList = function(props){
-  return(
-    <datalist id="hashtags">
-      {
-        props.chatrooms.map((chatroom)=>{
-          return chatroom.hashtags.map((hashtag)=>{
-            return <option label={hashtag} value={hashtag}></option>
-          })
-        })
-      }
-    </datalist>
-);
-}
-
 
 const MapContainer = function(props){
   return (
       <React.Fragment>
         <Tag.Map blur={props.loaded}>
-          <GoogleMap google={props.google} dropMarker = {props.dropMarker}/>
+          <GoogleMap google={props.google} addMarker = {props.addMarker} clearMarkers = {props.clearMarkers} dropMarker = {props.dropMarker}/>
           <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
               Map type: {props.map.map.maptype}<br />
@@ -182,7 +160,7 @@ const MapContainer = function(props){
           </Tag.MapState>
         </Tag.Map>
       </React.Fragment>
-        );
+  );
 }
 
 export default GoogleApiComponent({

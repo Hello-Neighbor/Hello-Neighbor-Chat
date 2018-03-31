@@ -18,6 +18,9 @@ export default class GoogleMap extends React.Component {
 		super(props);
 		this.map = null;
 		this.inputNode = {};
+		this.state = {
+			hashtagSearch : ""
+		};
 
 		//prototype
 		this.user = "johnhckuo";
@@ -73,11 +76,12 @@ export default class GoogleMap extends React.Component {
 			this.props.dispatch(Map.createMap(this.map));
 
 			this.registerEvent();
-			this.autoComplete();
-
+			if (this.props.map.searchMode === "Location"){			
+				this.autoComplete();
+			}
 		    this.props.chatroom.RoomArr.map((val, i)=>{
-		    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-			this.props.dropMarker(val.chatId, val.title, newLatLng, i);
+			    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
 		    })
 
 		}
@@ -163,18 +167,73 @@ export default class GoogleMap extends React.Component {
 		});
 	}
 
-  render() {
-  	const style = {
-      width: '100vw',
-      height: '100vh'
-    }
-    return(
-			<React.Fragment>
-				<Tag.MapSearch ref = {input => this.inputNode = input } className='pac_input' type='text' placeholder='Enter a location' />
-	      <div style={style} ref={ div => this.mapNode = div }>
-	        Loading map...
-	      </div>
-			</React.Fragment>
-    	)
-  }
+	changeSearchMode(e){
+		this.props.dispatch(Map.switchSearchMode(e.target.value));
+	}
+
+	filterMarker(currentSearch){
+		this.props.clearMarkers();
+			this.props.chatroom.RoomArr.map((val, i)=>{
+			  val.hashtags.map((hashtag)=>{
+			    if (hashtag === currentSearch){
+			      var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+			      this.props.addMarker(val.chatId, val.title, newLatLng, i);
+			      return;
+			    }
+			  })
+		})
+	}
+
+	filter(e){
+		this.setState({
+		  hashtagSearch: e.target.value + ""
+		});
+		this.filterMarker(e.target.value);
+	}
+
+	render() {
+		const {chatroom} = this.props;
+		const style = {
+		  width: '100vw',
+		  height: '100vh'
+		}
+		return(
+				<React.Fragment>
+					<Tag.Search>
+						<Tag.Select onChange={this.changeSearchMode.bind(this)}>
+							<option>Location</option>
+							<option>Filter</option>
+						</Tag.Select>
+						<Tag.LocationSearch currentmode={this.props.map.searchMode} ref = {input => this.inputNode = input } className='pac_input' type='text' placeholder='Enter a location' />
+						<Tag.Filter currentmode={this.props.map.searchMode}>
+				                <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
+				                <Tag.AutocompleteInput value={this.state.hashtagSearch} />
+				                <HashTagList chatrooms={chatroom.RoomArr} />
+				        </Tag.Filter>
+					</Tag.Search>
+			      	<div style={style} ref={ div => this.mapNode = div }>
+			        	Loading map...
+			      	</div>
+				</React.Fragment>
+		);
+	}
+
+}
+
+const HashTagList = function(props){
+  var currentHashtags = {};
+  return(
+    <datalist id="hashtags">
+      {
+        props.chatrooms.map((chatroom)=>{
+          return chatroom.hashtags.map((hashtag)=>{
+            if (currentHashtags[hashtag] == undefined){
+              currentHashtags[hashtag] = true;
+              return <option label={hashtag} value={hashtag}></option>
+            }
+          })
+        })
+      }
+    </datalist>
+  );
 }
