@@ -76,21 +76,22 @@ export default class GoogleMap extends React.Component {
 			this.props.dispatch(Map.createMap(this.map));
 
 			this.registerEvent();
-			if (this.props.map.searchMode === "Location"){			
-				this.autoComplete();
-			}
-		    this.props.chatroom.RoomArr.map((val, i)=>{
-			    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
-		    })
+			this.autoComplete();
+
+	    this.props.chatroom.RoomArr.map((val, i)=>{
+		    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+			this.props.dropMarker(val.chatId, val.title, newLatLng, i);
+	    })
 
 		}
 	}
 
-	autoComplete(){
+  searchBarInit(node){
+    this.inputNode = node;
+  }
 
-		this.inputNode = document.getElementsByClassName('pac_input')[0];
-		// initialize the autocomplete functionality using the #pac-input input box
+	autoComplete(){
+    // initialize the autocomplete functionality using the #pac-input input box
 		var searchBox = new window.google.maps.places.SearchBox(this.inputNode);
 		this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
 		let autoComplete = new window.google.maps.places.Autocomplete(this.inputNode);
@@ -204,7 +205,7 @@ export default class GoogleMap extends React.Component {
 							<option>Location</option>
 							<option>Filter</option>
 						</Tag.Select>
-						<Tag.LocationSearch currentmode={this.props.map.searchMode} ref = {input => this.inputNode = input } className='pac_input' type='text' placeholder='Enter a location' />
+						<Tag.LocationSearch currentmode={this.props.map.searchMode} searchBarInit = {this.searchBarInit.bind(this)} />
 						<Tag.Filter currentmode={this.props.map.searchMode}>
 				                <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
 				                <Tag.AutocompleteInput value={this.state.hashtagSearch} />

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from "react"
 
 export const MapState = styled.div`
 	position: absolute;
@@ -14,7 +15,7 @@ export const MapState = styled.div`
 `;
 
 /*---------------
-  Map Interface 
+  Map Interface
 ---------------*/
 
 export const Interface = styled.div.attrs({
@@ -69,7 +70,7 @@ export const Map = styled.div.attrs({
 
 
 /*---------------
-  Map Search bar 
+  Map Search bar
 ---------------*/
 
 export const Search = styled.div`
@@ -86,7 +87,7 @@ export const Select = styled.select`
 	border: none;
 	font-size: 14px;
 	height: 29px;
-	padding: 5px; 
+	padding: 5px;
 	color: #fff;
 
 	-webkit-border-radius: 20px;
@@ -96,7 +97,19 @@ export const Select = styled.select`
 
 `;
 
-export const LocationSearch = styled.input.attrs({
+
+export class LocationSearch extends React.Component {
+
+	componentDidMount(){
+		this.props.searchBarInit(this.inputNode);
+	}
+	render() {
+		const {currentmode} = this.props;
+    return <SearchBar currentmode = {currentmode} innerRef={input => this.inputNode = input} type='text' placeholder='Enter a location' />
+  }
+}
+
+const SearchBar = styled.input.attrs({
 	currentmode: props => props.currentmode === "Location" ? "inherit" : "none",
 })`
 	margin-top: 10px;
@@ -157,7 +170,7 @@ export const AutocompleteInput = styled.input.attrs({
 `;
 
 /*---------------
-     Loading 
+     Loading
 ---------------*/
 
 
@@ -179,6 +192,3 @@ export const LoadingScreen = styled.div`
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
 `;
-
-
-
