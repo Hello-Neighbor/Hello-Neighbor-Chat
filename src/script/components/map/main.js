@@ -147,7 +147,7 @@ export class MapInterface extends React.Component {
 const MapContainer = function(props){
   return (
       <React.Fragment>
-        <Tag.Map blur={props.loaded}>
+        <Tag.MapContainer blur={props.loaded}>
           <GoogleMap google={props.google} addMarker = {props.addMarker} clearMarkers = {props.clearMarkers} dropMarker = {props.dropMarker}/>
           <Tag.MapState>
               Zoom level: {props.map.map.zoom}<br />
@@ -158,7 +158,7 @@ const MapContainer = function(props){
               Place ID: {props.map.location.place_id}<br />
               Location: {props.map.location.place_location}<br />
           </Tag.MapState>
-        </Tag.Map>
+        </Tag.MapContainer>
       </React.Fragment>
   );
 }

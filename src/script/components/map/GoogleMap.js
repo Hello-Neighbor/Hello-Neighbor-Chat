@@ -86,6 +86,10 @@ export default class GoogleMap extends React.Component {
 		}
 	}
 
+  mapInit(map){
+    this.mapNode = map;
+  }
+
   searchBarInit(node){
     this.inputNode = node;
   }
@@ -194,10 +198,6 @@ export default class GoogleMap extends React.Component {
 
 	render() {
 		const {chatroom} = this.props;
-		const style = {
-		  width: '100vw',
-		  height: '100vh'
-		}
 		return(
 				<React.Fragment>
 					<Tag.Search>
@@ -210,11 +210,9 @@ export default class GoogleMap extends React.Component {
 				                <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
 				                <Tag.AutocompleteInput value={this.state.hashtagSearch} />
 				                <HashTagList chatrooms={chatroom.RoomArr} />
-				        </Tag.Filter>
+				    </Tag.Filter>
 					</Tag.Search>
-			      	<div style={style} ref={ div => this.mapNode = div }>
-			        	Loading map...
-			      	</div>
+          <Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
 				</React.Fragment>
 		);
 	}

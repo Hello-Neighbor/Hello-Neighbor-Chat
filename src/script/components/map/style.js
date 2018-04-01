@@ -56,7 +56,34 @@ export const ControlButton = styled.button`
 	}
 `;
 
-export const Map = styled.div.attrs({
+export class Map extends React.Component {
+
+	componentDidMount(){
+		this.props.mapInit(this.mapNode);
+	}
+	render() {
+		const {loaded} = this.props;
+    return(
+			<StyledMap loaded = {loaded} innerRef={map => this.mapNode = map} >
+				Loading map...
+			</StyledMap>
+		);
+	}
+}
+
+export const StyledMap = styled.div.attrs({
+	blur: props => props.loaded ? 10 : 0,
+})`
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+	filter: blur(${props => props.blur}px);
+	transition: all .1s;
+`;
+
+export const MapContainer = styled.div.attrs({
 	blur: props => props.loaded ? 10 : 0,
 })`
 	position:absolute;
@@ -127,19 +154,13 @@ const SearchBar = styled.input.attrs({
 export const Filter = styled.div.attrs({
 	currentmode: props => props.currentmode === "Filter" ? "inherit" : "none",
 })`
-	margin-top: 10px;
-	border: 1px solid transparent;
-	border-radius: 2px 0 0 2px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	height: 32px;
-	outline: none;
 	display:${props => props.currentmode};
 `;
 
 export const FilterInput = styled.input`
 	position: absolute;
 	margin-top: 10px;
+	left: 124px;
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
@@ -157,6 +178,7 @@ export const AutocompleteInput = styled.input.attrs({
 })`
 	position: absolute;
 	margin-top: 10px;
+	left: 124px;
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
