@@ -8,6 +8,7 @@ import Chatroom from "../chat/main"
 import * as Tag from "./style";
 import GoogleMap from "./GoogleMap";
 import GoogleApiComponent from "../../utils/GoogleApiComponent"
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 @connect((store) => {
   return {
@@ -98,7 +99,7 @@ export class MapInterface extends React.Component {
     this.markers.push(marker);
 
     window.google.maps.event.addListener(marker, 'click', ()=>{
-      this.props.dispatch(Map.showChatroom(id, title));
+      this.props.dispatch(Chat.setChatroomStatus("open", id, title));
     });
   }
 
@@ -117,11 +118,12 @@ export class MapInterface extends React.Component {
     const {map, chatroom} = this.props;
     return (
       <React.Fragment>
-        {
-          map.activeChatroom.id != null &&
-            <Chatroom id={map.activeChatroom.id} title={map.activeChatroom.title} />
-        }
-
+        <ReactCSSTransitionGroup transitionName="chatroom" transitionEnterTimeout={700} transitionLeaveTimeout={700}>
+          {
+            chatroom.activeChatroom.status === "open" &&
+              <Chatroom id={chatroom.activeChatroom.id} title={chatroom.activeChatroom.title} />
+          }
+        </ReactCSSTransitionGroup>
         <Tag.Loading loaded={this.props.loaded}>
           <Tag.LoadingScreen></Tag.LoadingScreen>
         </Tag.Loading>

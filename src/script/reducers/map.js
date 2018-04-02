@@ -1,5 +1,4 @@
 export default function reducer(state={
-    activeChatroom:{},
     map:{},
     location:{},
     mapInstance: null,
@@ -11,15 +10,6 @@ export default function reducer(state={
         return {
           ...state,
           mapInstance: action.payload.instance
-        }
-      }
-      case "SET_ACTIVE_CHATROOM": {
-        return {
-          ...state,
-          activeChatroom: {
-            id: action.payload.id,
-            title: action.payload.title
-          }
         }
       }
       case "SET_MAP": {

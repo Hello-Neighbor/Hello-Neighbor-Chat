@@ -16,3 +16,15 @@
   opacity: 0.01;
   transition: 700ms;
 }
+
+
+.chatroom-leave {
+  width: 100vw;
+  height: 100vh;  
+}
+
+.chatroom-leave.chatroom-leave-active {
+  width: 0px;
+  height: 0px;  
+  transition: 700ms;
+}

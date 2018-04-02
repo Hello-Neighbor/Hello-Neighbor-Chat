@@ -8,8 +8,8 @@ export const Chatroom = styled.div`
 	background: rgba(255, 255, 255, 0.8);
 	display: flex;
 	flex-direction: column;
-	width: 40vw;
-	height: 40vh;
+	width: 100vw;
+	height: 100vh;
 	box-sizing: border-box;
 `;
 
@@ -89,4 +89,30 @@ export const MessageContent = styled.div`
 
 export const SentTime = styled.div`
 	color: #999999;
+`;
+
+export const ControlPanel = styled.div`
+	display: flex;
+	position: absolute;
+	right: 10px;
+	& div{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+
+		margin-right: 2px;
+		margin-left: 2px;
+		padding: 5px;
+		
+		box-sizing: border-box;
+		border-radius: 100%;
+		width: 30px;
+		height: 30px;
+		transition: all .5s;
+		&:hover{
+			background: rgba(150, 150, 255 ,1);
+		}
+	}
+	
 `;

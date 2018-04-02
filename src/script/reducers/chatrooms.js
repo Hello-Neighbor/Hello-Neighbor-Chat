@@ -1,5 +1,6 @@
 export default function reducer(state={
-    RoomArr:[]
+    RoomArr:[],
+    activeChatroom: {}
   }, action) {
     switch (action.type) {
       case "FETCH_CHAT": {
@@ -52,6 +53,16 @@ export default function reducer(state={
           }
         );
         return newObj;
+      }
+      case "SET_CHATROOM_STATUS": {
+        return {
+          ...state,
+          activeChatroom: {
+            id: action.payload.id,
+            title: action.payload.title || state.activeChatroom.title,
+            status: action.payload.status
+          }
+        }
       }
 
 

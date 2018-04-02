@@ -51,22 +51,33 @@ export default class Chatroom extends React.Component {
     this.props.dispatch(Chat.setCurrentMsg(this.chatRoomId, e.target.value));
   }
 
+  close(id){
+    this.props.dispatch(Chat.setChatroomStatus("close", id));
+  }
+
   render() {
     const { chatroom, user } = this.props;
     const currentChatroom = chatroom.RoomArr[this.chatRoomId];
-    return (<Tag.Chatroom>
-      <Tag.ChatroomHeader><h2>{this.props.title}</h2></Tag.ChatroomHeader>
-      <Tag.ChatroomContainer>
-        <ReactCSSTransitionGroup transitionName="message" transitionEnterTimeout={700} transitionLeaveTimeout={700}>
-          {
-            currentChatroom.message.map((val)=>{
-              return <Messages val={val} user={user} userId={this.userId}/>
-            })
-          }
-        </ReactCSSTransitionGroup>
-      </Tag.ChatroomContainer>
-      <Tag.SubmitbarContainer><Tag.Submitbar onKeyPress={this.handleKeyPress.bind(this)} value = {currentChatroom.currentMessage} onChange = {this.onInputMessage.bind(this)} /><Tag.Submit onClick = {this.sendMessage.bind(this, currentChatroom.currentMessage)}>Submit</Tag.Submit></Tag.SubmitbarContainer>
-    </Tag.Chatroom>);
+    return (
+      <Tag.Chatroom data-chatroomid = {this.props.id}>
+        <Tag.ChatroomHeader>
+          <h2>{this.props.title}</h2>
+          <Tag.ControlPanel>
+            <div onClick={this.close.bind(this, this.props.id)}>X</div>
+          </Tag.ControlPanel>
+        </Tag.ChatroomHeader>
+        <Tag.ChatroomContainer>
+          <ReactCSSTransitionGroup transitionName="message" transitionEnterTimeout={700} transitionLeaveTimeout={700}>
+            {
+              currentChatroom.message.map((val)=>{
+                return <Messages val={val} user={user} userId={this.userId}/>
+              })
+            }
+          </ReactCSSTransitionGroup>
+        </Tag.ChatroomContainer>
+        <Tag.SubmitbarContainer><Tag.Submitbar onKeyPress={this.handleKeyPress.bind(this)} value = {currentChatroom.currentMessage} onChange = {this.onInputMessage.bind(this)} /><Tag.Submit onClick = {this.sendMessage.bind(this, currentChatroom.currentMessage)}>Submit</Tag.Submit></Tag.SubmitbarContainer>
+      </Tag.Chatroom>
+    );
   }
 }
 

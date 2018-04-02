@@ -43,3 +43,14 @@ export function createChatroom(id, user, title, lat, lng, hashtags) {
     }
   }
 }
+
+export function setChatroomStatus(status, id, title) {
+  return {
+    type: "SET_CHATROOM_STATUS",
+    payload: {
+      status,
+      id,
+      title,
+    }
+  }
+}

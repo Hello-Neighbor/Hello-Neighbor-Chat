@@ -93,16 +93,17 @@ export default class GoogleMap extends React.Component {
 		}
 	}
 
-  mapInit(map){
-    this.mapNode = map;
-  }
+	mapInit(map){
+		this.mapNode = map;
+	}
 
-  searchBarInit(node){
-    this.inputNode = node;
-  }
+	searchBarInit(node){
+		this.inputNode = node;
+	}
 
 	autoComplete(){
-    // initialize the autocomplete functionality using the #pac-input input box
+		
+    	// initialize the autocomplete functionality using the #pac-input input box
 		var searchBox = new window.google.maps.places.SearchBox(this.inputNode);
 		// this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
 		let autoComplete = new window.google.maps.places.Autocomplete(this.inputNode);
@@ -167,14 +168,14 @@ export default class GoogleMap extends React.Component {
 
 		this.map.addListener('dblclick', (e)=>{
 			var chatroom = prompt("Please enter the name of chatrooom");
-      if (chatroom != null) {
-      var hashtags = prompt("Please enter the hashtag of the chatrooom", "e.g. #sport #running");
-        if (hashtags != null){
-          hashtags = hashtags.replace(/\s/g,'');
-          var id = this.props.chatroom.RoomArr.length;
-          this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
-          this.props.dropMarker(id, chatroom, e.latLng);
-        }
+	      	if (chatroom != null) {
+		      	var hashtags = prompt("Please enter the hashtag of the chatrooom", "e.g. #sport #running");
+		        if (hashtags != null){
+		          hashtags = hashtags.replace(/\s/g,'');
+		          var id = this.props.chatroom.RoomArr.length;
+		          this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
+		          this.props.dropMarker(id, chatroom, e.latLng);
+		        }
 			}
 		});
 	}
