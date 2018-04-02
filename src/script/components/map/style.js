@@ -117,7 +117,7 @@ export const TypeSelector = styled.div`
 
 export const TypeButton = styled.input.attrs({
 	type: "radio",
-	name: "type" 
+	name: "type"
 })`
 `;
 
@@ -154,7 +154,7 @@ export class LocationSearch extends React.Component {
 const SearchBar = styled.input.attrs({
 	currentmode: props => props.currentmode === "Location" ? "inherit" : "none",
 })`
-	
+
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
@@ -226,5 +226,19 @@ export const LoadingScreen = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+`;
+
+/*---------------
+     Others
+---------------*/
+
+export const IconSelector = styled.div`
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	height: 50%;
 	background: rgba(0, 0, 0, 0.5);
 `;

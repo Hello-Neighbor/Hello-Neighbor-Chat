@@ -21,7 +21,8 @@ export default class GoogleMap extends React.Component {
 		this.map = null;
 		this.inputNode = {};
 		this.state = {
-			hashtagSearch : ""
+			hashtagSearch : "",
+      selectIcon : false
 		};
 
 		//prototype
@@ -178,9 +179,12 @@ export default class GoogleMap extends React.Component {
 			}).then(hashtags => {
 				if (!hashtags) throw null;
 				hashtags = hashtags.replace(/\s/g,'');
-				var id = this.props.chatroom.RoomArr.length;
-				this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
-				this.props.dropMarker(id, chatroom, e.latLng);
+        this.setState({
+          selectIcon: true
+        })
+				// var id = this.props.chatroom.RoomArr.length;
+				// this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
+				// this.props.dropMarker(id, chatroom, e.latLng);
 			});
 		});
 	}
@@ -225,26 +229,44 @@ export default class GoogleMap extends React.Component {
 
 				    	<Tag.TypeSelector>
 							<Tag.TypeButton
-								value="Location" 
-								checked={this.props.map.searchMode === "Location"} 
+								value="Location"
+								checked={this.props.map.searchMode === "Location"}
 								onChange={this.changeSearchMode.bind(this)}
 							/>
 							<Tag.TypeLabel>Location</Tag.TypeLabel>
 
-							<Tag.TypeButton 
-								value="Filter" 
-								checked={this.props.map.searchMode === "Filter"} 
+							<Tag.TypeButton
+								value="Filter"
+								checked={this.props.map.searchMode === "Filter"}
 								onChange={this.changeSearchMode.bind(this)}
 							/>
 							<Tag.TypeLabel>Filter</Tag.TypeLabel>
 						</Tag.TypeSelector>
 
 					</Tag.Search>
-          			<Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
+          <Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
+          <Tag.IconSelector>
+          {
+            this.state.selectIcon && <Icon />
+          }
+          </Tag.IconSelector>
 				</React.Fragment>
 		);
 	}
 
+}
+
+const Icon = function(){
+  return(
+    <div>
+    {
+      Object.keys(FontAwesome).map(val=>{
+        var Elem = FontAwesome[val];
+        return <Elem />
+      })
+    }
+    </div>
+  );
 }
 
 const HashTagList = function(props){
