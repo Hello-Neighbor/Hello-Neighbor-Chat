@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 import * as Tag from "./style";
 import * as Map from "../../actions/Map"
 import * as Chat from "../../actions/Chat"
+import * as FontAwesome from 'react-icons/lib/fa'
+import swal from 'sweetalert'
 
 @connect((store) => {
   return {
@@ -102,7 +104,7 @@ export default class GoogleMap extends React.Component {
 	}
 
 	autoComplete(){
-		
+
     	// initialize the autocomplete functionality using the #pac-input input box
 		var searchBox = new window.google.maps.places.SearchBox(this.inputNode);
 		// this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
@@ -154,12 +156,6 @@ export default class GoogleMap extends React.Component {
 			}));
 		});
 
-		this.map.addListener('maptypeid_changed', () => {
-			this.props.dispatch(Map.setMap({
-			  mapTypeId: this.map.getMapTypeId(),
-			}));
-		});
-
 		this.map.addListener('zoom_changed', () => {
 			this.props.dispatch(Map.setMap({
 			  zoom: this.map.getZoom(),
@@ -167,16 +163,25 @@ export default class GoogleMap extends React.Component {
 		});
 
 		this.map.addListener('dblclick', (e)=>{
-			var chatroom = prompt("Please enter the name of chatrooom");
-	      	if (chatroom != null) {
-		      	var hashtags = prompt("Please enter the hashtag of the chatrooom", "e.g. #sport #running");
-		        if (hashtags != null){
-		          hashtags = hashtags.replace(/\s/g,'');
-		          var id = this.props.chatroom.RoomArr.length;
-		          this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
-		          this.props.dropMarker(id, chatroom, e.latLng);
-		        }
-			}
+	      	var chatroom;
+	      	swal({
+			  title: "Create Chatroom",
+			  text: "Name of chatroom?",
+			  content: "input",
+			}).then(_chatroom => {
+				chatroom = _chatroom;
+				return swal({
+				  title: "Hashtags of chatroom?",
+				  text: "e.g. #sport #running",
+				  content: "input",
+				});
+			}).then(hashtags => {
+				if (!hashtags) throw null;
+				hashtags = hashtags.replace(/\s/g,'');
+				var id = this.props.chatroom.RoomArr.length;
+				this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
+				this.props.dropMarker(id, chatroom, e.latLng);
+			});
 		});
 	}
 

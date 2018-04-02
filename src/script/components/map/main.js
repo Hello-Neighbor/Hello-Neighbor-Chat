@@ -9,6 +9,7 @@ import * as Tag from "./style";
 import GoogleMap from "./GoogleMap";
 import GoogleApiComponent from "../../utils/GoogleApiComponent"
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import swal from 'sweetalert'
 
 @connect((store) => {
   return {
@@ -30,16 +31,16 @@ export class MapInterface extends React.Component {
   geoError(error) {
       switch(error.code) {
           case error.PERMISSION_DENIED:
-              alert("User denied the request for Geolocation.");
+              swal("User denied the request for Geolocation.");
               break;
           case error.POSITION_UNAVAILABLE:
-              alert("Location information is unavailable.");
+              swal("Location information is unavailable.");
               break;
           case error.TIMEOUT:
-              alert("The request to get user location timed out.");
+              swal("The request to get user location timed out.");
               break;
           case error.UNKNOWN_ERROR:
-              alert("An unknown error occurred.");
+              swal("An unknown error occurred.");
               break;
       }
   }
@@ -56,11 +57,11 @@ export class MapInterface extends React.Component {
               if (results[1]) {
                 this.dropMarker(results[1].place_id, results[1].formatted_address, newLatLngCoord);
               } else {
-                alert('No results found');
+                swal('No results found');
                 return;
               }
             } else {
-              alert('Geocoder failed due to: ' + status);
+              swal('Geocoder failed due to: ' + status);
               return;
             }
           });
@@ -74,7 +75,7 @@ export class MapInterface extends React.Component {
           }));
         }, this.geoError);
     } else {
-        alert("Geolocation is not supported by this browser.");
+        swal("Geolocation is not supported by this browser.");
     }
   }
 
