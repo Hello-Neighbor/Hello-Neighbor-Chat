@@ -68,9 +68,16 @@ export default class GoogleMap extends React.Component {
 			let lng = map.location.lng;
 			const center = new window.google.maps.LatLng(lat, lng);
 			const mapConfig = Object.assign({}, {
-			center: center,
-			zoom: zoom,
-			disableDoubleClickZoom: true
+				center: center,
+				zoom: zoom,
+				disableDoubleClickZoom: true,
+				disableDefaultUI: true,
+				zoomControl: true,
+				mapTypeControl: false,
+				scaleControl: true,
+				streetViewControl: true,
+				rotateControl: true,
+				fullscreenControl: false
 			})
 			this.map = new window.google.maps.Map(this.mapNode, mapConfig);
 			this.props.dispatch(Map.createMap(this.map));
@@ -78,10 +85,10 @@ export default class GoogleMap extends React.Component {
 			this.registerEvent();
 			this.autoComplete();
 
-	    this.props.chatroom.RoomArr.map((val, i)=>{
-		    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-			this.props.dropMarker(val.chatId, val.title, newLatLng, i);
-	    })
+		    this.props.chatroom.RoomArr.map((val, i)=>{
+			    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
+		    })
 
 		}
 	}
@@ -97,7 +104,7 @@ export default class GoogleMap extends React.Component {
 	autoComplete(){
     // initialize the autocomplete functionality using the #pac-input input box
 		var searchBox = new window.google.maps.places.SearchBox(this.inputNode);
-		this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
+		// this.map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
 		let autoComplete = new window.google.maps.places.Autocomplete(this.inputNode);
 
 		// Bias the SearchBox results towards current map's viewport.
@@ -173,6 +180,7 @@ export default class GoogleMap extends React.Component {
 	}
 
 	changeSearchMode(e){
+		console.log(e.target.value)
 		this.props.dispatch(Map.switchSearchMode(e.target.value));
 	}
 
@@ -201,18 +209,32 @@ export default class GoogleMap extends React.Component {
 		return(
 				<React.Fragment>
 					<Tag.Search>
-						<Tag.Select onChange={this.changeSearchMode.bind(this)}>
-							<option>Location</option>
-							<option>Filter</option>
-						</Tag.Select>
+
 						<Tag.LocationSearch currentmode={this.props.map.searchMode} searchBarInit = {this.searchBarInit.bind(this)} />
 						<Tag.Filter currentmode={this.props.map.searchMode}>
 				                <Tag.FilterInput onChange={this.filter.bind(this)} list="hashtags"/>
 				                <Tag.AutocompleteInput value={this.state.hashtagSearch} />
 				                <HashTagList chatrooms={chatroom.RoomArr} />
-				    </Tag.Filter>
+				    	</Tag.Filter>
+
+				    	<Tag.TypeSelector>
+							<Tag.TypeButton
+								value="Location" 
+								checked={this.props.map.searchMode === "Location"} 
+								onChange={this.changeSearchMode.bind(this)}
+							/>
+							<Tag.TypeLabel>Location</Tag.TypeLabel>
+
+							<Tag.TypeButton 
+								value="Filter" 
+								checked={this.props.map.searchMode === "Filter"} 
+								onChange={this.changeSearchMode.bind(this)}
+							/>
+							<Tag.TypeLabel>Filter</Tag.TypeLabel>
+						</Tag.TypeSelector>
+
 					</Tag.Search>
-          <Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
+          			<Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
 				</React.Fragment>
 		);
 	}

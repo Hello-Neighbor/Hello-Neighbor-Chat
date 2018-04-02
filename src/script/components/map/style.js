@@ -100,27 +100,42 @@ export const MapContainer = styled.div.attrs({
   Map Search bar
 ---------------*/
 
-export const Search = styled.div`
-	position: absolute;
-	margin-top: 20px;
-	margin-left: 20px;
-	box-sizing: border-box;
-	z-index: 2;
+export const TypeSelector = styled.div`
+	color: #fff;
+	background-color: #4d90fe;
+	padding: 5px 11px 0px 11px;
+
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 
 `;
 
-export const Select = styled.select`
-	background: transparent;
-	border: none;
-	font-size: 14px;
-	height: 29px;
-	padding: 5px;
-	color: #fff;
+export const TypeButton = styled.input.attrs({
+	type: "radio",
+	name: "type" 
+})`
+`;
 
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	border-radius: 20px;
-	background-color: #3b8ec2;
+export const TypeLabel = styled.label`
+	font-family: Roboto;
+	font-size: 13px;
+	font-weight: 300;
+
+`;
+
+
+export const Search = styled.div`
+	position: relative;
+	margin-top: 20px;
+	margin-left: 20px;
+	box-sizing: border-box;
+	display: flex;
+	z-index: 2;
 
 `;
 
@@ -139,7 +154,7 @@ export class LocationSearch extends React.Component {
 const SearchBar = styled.input.attrs({
 	currentmode: props => props.currentmode === "Location" ? "inherit" : "none",
 })`
-	margin-top: 10px;
+	
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
@@ -147,7 +162,8 @@ const SearchBar = styled.input.attrs({
 	height: 32px;
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	width:600px;
+	width:400px;
+
 	display: ${props => props.currentmode};
 `;
 
@@ -157,10 +173,10 @@ export const Filter = styled.div.attrs({
 	display:${props => props.currentmode};
 `;
 
-export const FilterInput = styled.input`
-	position: absolute;
-	margin-top: 10px;
-	left: 124px;
+export const FilterInput = styled.input.attrs({
+	placeholder: 'Enter a hashtag'
+})`
+
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
@@ -168,24 +184,22 @@ export const FilterInput = styled.input`
 	height: 32px;
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	width:600px;
-	background: transparent;
+	width:400px;
 	z-index: 11;
 `;
 
 export const AutocompleteInput = styled.input.attrs({
 	disabled: "disabled"
 })`
+
 	position: absolute;
-	margin-top: 10px;
-	left: 124px;
 	border: 1px solid transparent;
 	border-radius: 2px 0 0 2px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	height: 32px;
 	outline: none;
-	width:600px;
+	width:400px;
 	background: transparent;
 	z-index: 10;
 	color: #AAAAAA;
