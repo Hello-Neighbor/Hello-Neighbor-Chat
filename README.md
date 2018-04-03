@@ -21,3 +21,5 @@ npm run dev
 ## Powered by
 - [Reactjs](https://reactjs.org/)
 - [Google Maps API](https://developers.google.com/maps)
+- [FontAwesome](https://fontawesome.com/icons?d=gallery)
+- [Sweet Alert](https://sweetalert.js.org/)
