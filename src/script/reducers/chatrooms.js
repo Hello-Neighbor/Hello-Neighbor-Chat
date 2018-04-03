@@ -49,7 +49,8 @@ export default function reducer(state={
               title: action.payload.title,
               lat: action.payload.lat,
               lng: action.payload.lng,
-              hashtags: hashtags.splice(1, hashtags.length-1)
+              hashtags: hashtags.splice(1, hashtags.length-1),
+              icon: action.payload.icon
           }
         );
         return newObj;

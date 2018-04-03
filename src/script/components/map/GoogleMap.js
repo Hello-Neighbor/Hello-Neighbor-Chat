@@ -22,7 +22,10 @@ export default class GoogleMap extends React.Component {
 		this.inputNode = {};
 		this.state = {
 			hashtagSearch : "",
-      selectIcon : false
+      		selectIcon : false,
+      		hashtags : "",
+      		chatroomName : "",
+      		latLng: null
 		};
 
 		//prototype
@@ -44,10 +47,10 @@ export default class GoogleMap extends React.Component {
 
     //for prototyping
 
-    this.props.dispatch(Chat.createChatroom(0, this.user, "Running", -33.8788, 151.2295, "#sport#running"));
-    this.props.dispatch(Chat.createChatroom(1, this.user, "Coding", -33.8388, 151.2495, "#coding#indoor"));
-    this.props.dispatch(Chat.createChatroom(2, this.user, "Mountain Climbing", -33.9, 151.3, "#sport#outdoor"));
-    this.props.dispatch(Chat.createChatroom(3, this.user, "Bicycling", -33.88, 151.2095, "#sport#single"));
+    this.props.dispatch(Chat.createChatroom(0, this.user, "Running", -33.8788, 151.2295, "#sport#running", "FaGroup"));
+    this.props.dispatch(Chat.createChatroom(1, this.user, "Coding", -33.8388, 151.2495, "#coding#indoor", "FaCode"));
+    this.props.dispatch(Chat.createChatroom(2, this.user, "Mountain Climbing", -33.9, 151.3, "#sport#outdoor", "FaFutbolO"));
+    this.props.dispatch(Chat.createChatroom(3, this.user, "Bicycling", -33.88, 151.2095, "#sport#single", "FaHeart"));
 
   }
 
@@ -90,7 +93,7 @@ export default class GoogleMap extends React.Component {
 
 		    this.props.chatroom.RoomArr.map((val, i)=>{
 			    var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-				this.props.dropMarker(val.chatId, val.title, newLatLng, i);
+				this.props.dropMarker(val.chatId, val.title, newLatLng, i, val.icon);
 		    })
 
 		}
@@ -164,33 +167,51 @@ export default class GoogleMap extends React.Component {
 		});
 
 		this.map.addListener('dblclick', (e)=>{
-	      	var chatroom;
+	      	var chatroomName;
 	      	swal({
 			  title: "Create Chatroom",
 			  text: "Name of chatroom?",
 			  content: "input",
-			}).then(_chatroom => {
-				chatroom = _chatroom;
+			}).then(_chatroomName => {
+				chatroomName = _chatroomName;
 				return swal({
-				  title: "Hashtags of chatroom?",
+				  title: "Hashtags of chatroom "+ chatroomName +"?",
 				  text: "e.g. #sport #running",
 				  content: "input",
 				});
 			}).then(hashtags => {
 				if (!hashtags) throw null;
 				hashtags = hashtags.replace(/\s/g,'');
-        this.setState({
-          selectIcon: true
-        })
-				// var id = this.props.chatroom.RoomArr.length;
-				// this.props.dispatch(Chat.createChatroom(id, this.user, chatroom, e.latLng.lat(), e.latLng.lng(), hashtags));
-				// this.props.dropMarker(id, chatroom, e.latLng);
+		        this.setState({
+		          selectIcon: true,
+		          hashtags,
+		          chatroomName,
+		          latLng: e.latLng
+		        })
 			});
 		});
 	}
 
+	registerChatroom(icon){
+		if (this.state.hashtags && this.state.chatroomName && icon && this.state.latLng){
+			var id = this.props.chatroom.RoomArr.length;
+			this.props.dispatch(Chat.createChatroom(id, this.user, this.state.chatroomName, this.state.latLng.lat(), this.state.latLng.lng(), this.state.hashtags, icon));
+			this.props.dropMarker(id, this.state.chatroomName, this.state.latLng, null, icon);
+			this.resetRegisterData();
+		}
+
+	}
+
+	resetRegisterData(){
+		this.setState({
+			selectIcon: false,
+			hashtags: "",
+			chatroomName: "",
+			latLng: null
+		})
+	}
+
 	changeSearchMode(e){
-		console.log(e.target.value)
 		this.props.dispatch(Map.switchSearchMode(e.target.value));
 	}
 
@@ -198,10 +219,9 @@ export default class GoogleMap extends React.Component {
 		this.props.clearMarkers();
 			this.props.chatroom.RoomArr.map((val, i)=>{
 			  val.hashtags.map((hashtag)=>{
-			    if (hashtag === currentSearch){
-			      var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
-			      this.props.addMarker(val.chatId, val.title, newLatLng, i);
-			      return;
+			    if (hashtag === currentSearch || currentSearch.replace(/\s/g, '') === ""){
+					var newLatLng = new window.google.maps.LatLng(val.lat, val.lng);
+					this.props.addMarker(val.chatId, val.title, newLatLng, val.icon);
 			    }
 			  })
 		})
@@ -244,25 +264,31 @@ export default class GoogleMap extends React.Component {
 						</Tag.TypeSelector>
 
 					</Tag.Search>
-          <Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
-          <Tag.IconSelector>
-          {
-            this.state.selectIcon && <Icon />
-          }
-          </Tag.IconSelector>
+					<Tag.Map loaded = {this.props.loaded} mapInit = {this.mapInit.bind(this)} />
+					{
+					this.state.selectIcon && 
+					<Tag.NotificationContainer>
+						<Tag.NotificationTitle>Select an icon</Tag.NotificationTitle>	
+						<Tag.IconSelector>
+							<div>	
+								<Icon registerChatroom={this.registerChatroom.bind(this)}/>
+							</div>
+						</Tag.IconSelector>
+					</Tag.NotificationContainer>
+					}
 				</React.Fragment>
 		);
 	}
 
 }
 
-const Icon = function(){
+const Icon = function(props){
   return(
     <div>
     {
       Object.keys(FontAwesome).map(val=>{
         var Elem = FontAwesome[val];
-        return <Elem />
+        return <Elem onClick={props.registerChatroom.bind(this, val)}/>
       })
     }
     </div>

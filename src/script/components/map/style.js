@@ -233,12 +233,56 @@ export const LoadingScreen = styled.div`
      Others
 ---------------*/
 
-export const IconSelector = styled.div`
+export const NotificationContainer = styled.div`
 	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+`;
+
+
+export const NotificationTitle = styled.h2`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 50%;
-	height: 50%;
-	background: rgba(0, 0, 0, 0.5);
+	height: 5%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	background: rgba(255, 255, 255, 0.5);
+	font-size: 30px;
+	font-weight: bold;
+`;
+
+
+export const IconSelector = styled.div`
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	width: 50%;
+	height: 30%;
+	padding: 0px 20px 20px 20px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.5);
+	overflow: scroll;
+	& div{
+		height: 100%;
+		& svg{
+			cursor: pointer;
+			margin: 5px 5px 5px 5px;
+			&:hover{
+				border-radius: 2px;
+				background: rgba(0, 0, 0, 0.5);
+			}
+		}
+	}
+
 `;

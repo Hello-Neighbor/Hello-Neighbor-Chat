@@ -30,7 +30,7 @@ export function setCurrentMsg(chatId, currentMessage) {
   }
 }
 
-export function createChatroom(id, user, title, lat, lng, hashtags) {
+export function createChatroom(id, user, title, lat, lng, hashtags, icon) {
   return {
     type: "CREATE_CHATROOM",
     payload: {
@@ -39,7 +39,8 @@ export function createChatroom(id, user, title, lat, lng, hashtags) {
       title,
       lat,
       lng,
-      hashtags
+      hashtags,
+      icon
     }
   }
 }

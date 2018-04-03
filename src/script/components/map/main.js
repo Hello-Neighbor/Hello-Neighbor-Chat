@@ -10,6 +10,7 @@ import GoogleMap from "./GoogleMap";
 import GoogleApiComponent from "../../utils/GoogleApiComponent"
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import swal from 'sweetalert'
+import * as FontAwesome from 'react-icons/lib/fa'
 
 @connect((store) => {
   return {
@@ -79,21 +80,38 @@ export class MapInterface extends React.Component {
     }
   }
 
-  dropMarker(id, title, position, i) {
+  dropMarker(id, title, position, i, icon) {
       i = i || 0;
       //this.clearMarkers();
       setTimeout(()=>{
-        this.addMarker(id, title, position);
+        this.addMarker(id, title, position, icon);
       }, i * 300);
   }
 
-  addMarker(id, title, position){
-    //var image = 'img/flagred.png';
+  addMarker(id, title, position, icon){
+
+    icon = icon || null;
+
+    if (icon){
+
+      var component = FontAwesome[icon];
+      var path = component().props.children.props.children.props.d;
+      var icon = {
+        path,
+        fillColor: '#FF0000',
+        fillOpacity: .8,
+        anchor: new google.maps.Point(0,0),
+        strokeWeight: 0,
+        scale: 1
+      }
+
+    }
+
     var marker = new window.google.maps.Marker({
       map: this.props.map.mapInstance,
       title,
       position,
-      //icon: image,
+      icon,
       draggable: false,
       animation: window.google.maps.Animation.DROP
     });
