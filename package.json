@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnhckuo/Waterfall-Gallery.git"
+    "url": "git+https://github.com/Hello-Neighbor/Hello-Neighbor-Chat.git"
   },
   "keywords": [
     "react"
@@ -18,9 +18,9 @@
   "author": "Hello-Neighbor",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/johnhckuo/Waterfall-Gallery/issues"
+    "url": "https://github.com/Hello-Neighbor/Hello-Neighbor-Chat/issues"
   },
-  "homepage": "https://github.com/johnhckuo/Waterfall-Gallery#readme",
+  "homepage": "https://github.com/Hello-Neighbor/Hello-Neighbor-Chat#readme",
   "devDependencies": {
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",
